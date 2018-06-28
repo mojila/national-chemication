@@ -6,6 +6,7 @@ import {
 
 import LandingPage from './../landingpage/landingpage';
 import RegisterPage from './../registerpage/registerpage';
+import CeoLoginPage from './../ceologinpage/ceologinpage';
 
 import * as routes from '../../constants/routes';
 
@@ -29,6 +30,11 @@ const App = () =>
         exact
         path={routes.REGISTER}
         component={RegisterPage}
+      />
+      <Route
+        exact
+        path={routes.LOGIN.CEO}
+        component={CeoLoginPage}
       />
     </div>
   </Router>;
