@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animate.css": "^3.6.1",
     "bootstrap": "^4.1.1",
     "react": "^16.4.1",
+    "react-animated-css": "^1.0.4",
     "react-dom": "^16.4.1",
     "react-icons-kit": "^1.1.5",
     "react-loading": "^2.0.2",
@@ -17,5 +19,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/mojila/national-chemication.git",
+  "author": "mojila <me.mojila@Mochs-MacBook.local>",
+  "license": "MIT"
 }

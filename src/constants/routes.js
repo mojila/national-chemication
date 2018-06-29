@@ -1,5 +1,8 @@
 const ROOT = '/';
-const REGISTER = '/daftar';
+const REGISTER = {
+    ROOT: '/daftar',
+    CEO: '/daftar/ceo'
+};
 const LOGIN = {
     CEO: '/login/ceo'
 };

@@ -5,86 +5,61 @@ import {
     Col,
     Button
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
+import {Animated} from 'react-animated-css';
 
 import bgCeo from './../../statics/images/ceo.jpg';
 import bgEssay from './../../statics/images/essay.jpg';
 import bgHsfc from './../../statics/images/hsfc.jpeg';
 
-const RegisterPage = () =>
-    <Container className="mt-5">
-        <RegisterCategory/>
-    </Container>;
+class RegisterPage extends Component {
+    componentDidMount() {
+        document.title = "National Chemication : Pendaftaran dan Login";
+        document.body.style.background = "#f1f1f1";
+    }
+
+    render() {
+        return  <Container>
+            <RegisterCategory/>
+        </Container>;
+    }
+}
+    
 
 const RegisterCategory = () =>
-    <Row>
+    <Row className="mt-md-5">
         <CeoCategory/>
-        <Col 
-            className="m-1 bg-white p-3 shadow rounded"
-            style={{
-                background: "url('"+ bgEssay +"')",
-                backgroundSize: 'cover'
-            }}
-        >
-            <div className="mt-4">
-                <p 
-                    className="h2 bg-white d-inline text-uppercase"
-                >
-                EC: Energy Competition
-                </p>
-            </div>
-            <div className="mt-4">
-                <div
-                    className="bg-white p-2 rounded"
-                >
-                    <p className="text-capitalize">
-                        Energy Competiotion (EC) merupakan kegiatan yang meliputi kompetisi KTI yang ditujukan untuk mahasiswa/i S1 atau diploma.
-                    </p>
-                    <div className="d-flex justify-content-end">
-                        <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-4">
-                <Button className="rounded" color="success" block>LOGIN</Button>
-                <Button className="rounded" color="primary" block>PENDAFTARAN</Button>
-            </div>
-        </Col>
-        <Col 
-            className="m-1 bg-white p-3 shadow rounded"
-            style={{
-                background: "url('"+ bgHsfc +"')",
-                backgroundSize: 'cover'
-            }}
-        >
-            <div className="mt-4">
-                <p 
-                    className="h2 bg-white d-inline text-uppercase"
-                >
-                HSFC: High School Futsal Competition
-                </p>
-            </div>
-            <div className="mt-4">
-                <div
-                    className="bg-white p-2 rounded"
-                >
-                    <p className="text-capitalize">
-                    High School Futsal Competitiin (HSFC) merupakan kegiatan perlombaan futsal yang ditujuan untuk siswa/i SMK/SMA/MA Sederajat.
-                    </p>
-                    <div className="d-flex justify-content-end">
-                        <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-4">
-                <Button className="rounded" color="success" block>LOGIN</Button>
-                <Button className="rounded" color="primary" block>PENDAFTARAN</Button>
-            </div>
-        </Col>
+        <EcCategory/>
+        <HsfcCategory/>
     </Row>;
 
 class CeoCategory extends Component {
+    constructor(props) {
+        super(props);
+
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+
+        this.state = {
+            isFocus: false
+        };
+    }
+
+    onMouseOver() {
+        this.setState({
+            isFocus: true
+        });
+    }
+
+    onMouseLeave() {
+        this.setState({
+            isFocus: false
+        });
+    }
+
     render() {
+        let {isFocus} = this.state;
+
         return <Col 
             className="m-1 bg-white p-3 shadow rounded"
             style={{
@@ -92,31 +67,168 @@ class CeoCategory extends Component {
                 backgroundSize: 'cover'
             }}
         >
-            <div className="mt-4">
-                <p 
-                    className="h2 bg-white d-inline text-uppercase"
-                >
-                    CEO: Chemical Engineering Olympiad
-                </p>
-            </div>
-            <div className="mt-4">
-                <div
-                    className="bg-white p-2 rounded"
-                >
-                    <p className="text-capitalize">
-                    Chemical Engineering Olympiad (CEO) merupaan kegiatan kompetisi kimia yang ditujukan untuk siswa/i SMA/MA Sederajat.
+            <div
+                onMouseOver={this.onMouseOver}
+                onMouseLeave={this.onMouseLeave}
+            >
+                <div className="mt-4">
+                    <p 
+                        className="h2 bg-white d-inline text-uppercase"
+                    >
+                        CEO: Chemical Engineering Olympiad
                     </p>
-                    <div className="d-flex justify-content-end">
-                        <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
-                    </div>
                 </div>
-            </div>
-            <div className="mt-4">
-                <Button className="rounded" color="success" block tag={Link} to="/login/ceo">LOGIN</Button>
-                <Button className="rounded" color="primary" block>PENDAFTARAN</Button>
+                <Animated animationIn="flipInY" animationOut="flipOutY" className="mt-4" isVisible={isFocus}>
+                    <div
+                        className="bg-white p-2 rounded"
+                    >
+                        <p className="text-capitalize">
+                        Chemical Engineering Olympiad (CEO) merupaan kegiatan kompetisi kimia yang ditujukan untuk siswa/i SMA/MA Sederajat.
+                        </p>
+                        <div className="d-flex justify-content-end">
+                            <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
+                        </div>
+                    </div>
+                </Animated>
+                <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
+                    <Button className="rounded text-uppercase font-weight-bold" color="success" block tag={Link} to="/login/ceo">login</Button>
+                    <Button className="rounded text-uppercase font-weight-bold" color="primary" block tag={Link} to="/daftar/ceo">pendaftaran</Button>
+                    <Button className="rounded text-uppercase text-white font-weight-bold" color="warning" block>konfirmasi pembayaran</Button>
+                </Animated>
             </div>
         </Col>
     }
 }
 
-export default RegisterPage;
+class EcCategory extends Component {
+    constructor(props) {
+        super(props);
+
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+
+        this.state = {
+            isFocus: false
+        };
+    }
+
+    onMouseOver() {
+        this.setState({
+            isFocus: true
+        });
+    }
+
+    onMouseLeave() {
+        this.setState({
+            isFocus: false
+        });
+    }
+
+    render() {
+        let {isFocus} = this.state;
+
+        return <Col 
+            className="m-1 bg-white p-3 shadow rounded"
+            style={{
+                background: "url('"+ bgEssay +"')",
+                backgroundSize: 'cover'
+            }}
+        >
+            <div
+                onMouseOver={this.onMouseOver}
+                onMouseLeave={this.onMouseLeave}
+            >
+                <div className="mt-4">
+                    <p 
+                        className="h2 bg-white d-inline text-uppercase"
+                    >
+                    EC: Energy Competition
+                    </p>
+                </div>
+                <Animated animationIn="flipInY" animationOut="flipOutY" className="mt-4" isVisible={isFocus}>
+                    <div
+                        className="bg-white p-2 rounded"
+                    >
+                        <p className="text-capitalize">
+                            Energy Competition (EC) adalah kompetisi karya tulis ilmiah dalam bidang yang ditujukan untuk Mahasiswa/Mahasiswi S1/Diploma se-Indonesia.
+                        </p>
+                        <div className="d-flex justify-content-end">
+                            <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
+                        </div>
+                    </div>
+                </Animated>
+                <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
+                    <Button className="rounded font-weight-bold" color="primary" block>PENDAFTARAN</Button>
+                </Animated>
+            </div>
+        </Col>;
+    }
+}
+
+class HsfcCategory extends Component {
+    constructor(props) {
+        super(props);
+
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+
+        this.state = {
+            isFocus: false
+        };
+    }
+
+    onMouseOver() {
+        this.setState({
+            isFocus: true
+        });
+    }
+
+    onMouseLeave() {
+        this.setState({
+            isFocus: false
+        });
+    }
+
+    render() {
+        let {isFocus} = this.state;
+
+        return <Col 
+            className="m-1 bg-white p-3 shadow rounded"
+            style={{
+                background: "url('"+ bgHsfc +"')",
+                backgroundSize: 'cover'
+            }}
+        >
+            <div
+                onMouseOver={this.onMouseOver}
+                onMouseLeave={this.onMouseLeave}
+            >
+                <div className="mt-4">
+                    <p 
+                        className="h2 bg-white d-inline text-uppercase"
+                    >
+                    HSFC: High School Futsal Competition
+                    </p>
+                </div>
+                <Animated animationIn="flipInY" animationOut="flipOutY" className="mt-4" isVisible={isFocus}>
+                    <div
+                        className="bg-white p-2 rounded"
+                    >
+                        <p className="text-capitalize">
+                        High School Futsal Competition (HSFC) merupakan kegiatan perlombaan futsal yang ditujuan untuk siswa/i SMK/SMA/MA Sederajat.
+                        </p>
+                        <div className="d-flex justify-content-end">
+                            <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
+                        </div>
+                    </div>
+                </Animated>
+                <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
+                    <Button className="rounded font-weight-bold" color="primary" block>PENDAFTARAN</Button>
+                    <Button className="rounded text-white font-weight-bold" color="warning" block>KONFIRMASI PEMBAYARAN</Button>
+                </Animated>
+            </div>
+        </Col>
+    }
+}
+
+export default withRouter(RegisterPage);
