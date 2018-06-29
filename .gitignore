@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/production/functions/node_modules
 
 # testing
 /coverage
