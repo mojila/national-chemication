@@ -24,7 +24,7 @@ class CeoLoginPage extends Component {
     render() {
         return <Container className="mt-5"> 
             <Row>
-                <Col md={{size: 6, offset: 3}}>
+                <Col md={{size: 4, offset: 4}}>
                     <Animated
                         isVisible={true}
                         animationIn="flipInY"
@@ -66,21 +66,24 @@ class FormLogin extends Component {
         let isValid = email !== ''
                     && password !== '';
 
-        return <Form 
-            className="p-3 rounded shadow bg-white"
+        return <Form
             onSubmit={this.onSubmit}
         >
-            <Row className="border-bottom pb-2 mb-2">
+            <Row 
+                className="p-3 mb-1 bg-white rounded shadow"
+            >
                 <Col>
-                    <Button size="sm" tag={Link} to="/daftar">Kembali</Button>
+                    <Button size="sm" tag={Link} to="/daftar" color="light" className="shadow">Beranda</Button>
                 </Col>
                 <Col>
-                    <p className="text-uppercase h6 mt-1 text-right">
+                    <p className="text-uppercase h6 text-right">
                         Login Peserta CEO
                     </p>
                 </Col>
             </Row>
-            <Row>
+            <Row
+                className="p-3 mb-1 bg-white rounded shadow"
+            >
                 <Col 
                     md={{
                         size:10,
@@ -94,11 +97,11 @@ class FormLogin extends Component {
                             value={email} 
                             placeholder="Contoh: saya@domain.com"
                             onChange={e => this.setState(byPropKey('email', e.currentTarget.value))}
+                            size="sm"
+                            required
                         />
                     </FormGroup>
                 </Col>
-            </Row>
-            <Row>
                 <Col
                     md={{
                         size:10,
@@ -112,18 +115,22 @@ class FormLogin extends Component {
                             value={password} 
                             placeholder="Isi Password dengan benar"
                             onChange={e => this.setState(byPropKey('password', e.currentTarget.value))}
+                            size="sm"
+                            required
                         />
                     </FormGroup>
                 </Col>
             </Row>
-            <Row className="mb-3">
+            <Row
+                className="p-3 mb-1 bg-white rounded shadow"
+            >
                 <Col
                     md={{
                         size:10,
                         offset:1
                     }}
                 >
-                    <Button className="text-uppercase" color="success" block disabled={!isValid}>Login</Button>
+                    <Button className="text-uppercase shadow" color="success" block disabled={!isValid}>Login</Button>
                 </Col>
             </Row>
             {
@@ -133,7 +140,9 @@ class FormLogin extends Component {
                         animationOut="fadeOut"
                         isVisible={true}
                     >
-                        <Row className="border-top bg-danger">
+                        <Row
+                            className="p-3 mb-1 bg-white rounded shadow"
+                        >
                             <Col>
                                 <div className="mt-3">
                                     <p class="text-white text-center font-weight-bold small">{error}</p>
@@ -143,11 +152,14 @@ class FormLogin extends Component {
                     </Animated>
                 : ''
             }
-            <Row className="border-top">
+            <Row 
+                className="pt-3 mb-1 bg-white rounded shadow"
+            >
                 <Col>
-                    <div className="mt-3">
-                        <p className="small text-center">Belum Daftar ? Silahkan <Button size="sm">Daftar Disini</Button></p>
-                    </div>
+                    <p className="small text-center">
+                        Belum Daftar ? Silahkan 
+                        | <Button className="shadow" size="sm" color="primary" tag={Link} to="/daftar/ceo">Daftar Disini</Button>
+                    </p>
                 </Col>
             </Row>
         </Form>;

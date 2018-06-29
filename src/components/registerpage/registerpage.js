@@ -80,20 +80,20 @@ class CeoCategory extends Component {
                 </div>
                 <Animated animationIn="flipInY" animationOut="flipOutY" className="mt-4" isVisible={isFocus}>
                     <div
-                        className="bg-white p-2 rounded"
+                        className="bg-white p-3 rounded shadow"
                     >
-                        <p className="text-capitalize">
-                        Chemical Engineering Olympiad (CEO) merupaan kegiatan kompetisi kimia yang ditujukan untuk siswa/i SMA/MA Sederajat.
+                        <p className="text-capitalize small">
+                            Chemical Engineering Olympiad (CEO) merupaan kegiatan kompetisi kimia yang ditujukan untuk siswa/i SMA/MA Sederajat.
                         </p>
                         <div className="d-flex justify-content-end">
-                            <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
+                            <Button size="sm" color="secondary" className="shadow">Lihat Petunjuk</Button>
                         </div>
                     </div>
                 </Animated>
                 <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
-                    <Button className="rounded text-uppercase font-weight-bold" color="success" block tag={Link} to="/login/ceo">login</Button>
-                    <Button className="rounded text-uppercase font-weight-bold" color="primary" block tag={Link} to="/daftar/ceo">pendaftaran</Button>
-                    <Button className="rounded text-uppercase text-white font-weight-bold" color="warning" block>konfirmasi pembayaran</Button>
+                    <Button className="text-uppercase shadow" color="success" block tag={Link} to="/login/ceo">login</Button>
+                    <Button className="text-uppercase shadow" color="primary" block tag={Link} to="/daftar/ceo">pendaftaran</Button>
+                    <Button className="text-uppercase text-white shadow" color="warning" block>konfirmasi pembayaran</Button>
                 </Animated>
             </div>
         </Col>
@@ -147,18 +147,18 @@ class EcCategory extends Component {
                 </div>
                 <Animated animationIn="flipInY" animationOut="flipOutY" className="mt-4" isVisible={isFocus}>
                     <div
-                        className="bg-white p-2 rounded"
+                        className="bg-white p-3 rounded shadow"
                     >
-                        <p className="text-capitalize">
+                        <p className="text-capitalize small">
                             Energy Competition (EC) adalah kompetisi karya tulis ilmiah dalam bidang yang ditujukan untuk Mahasiswa/Mahasiswi S1/Diploma se-Indonesia.
                         </p>
                         <div className="d-flex justify-content-end">
-                            <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
+                            <Button size="sm" color="secondary" className="shadow">Lihat Petunjuk</Button>
                         </div>
                     </div>
                 </Animated>
                 <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
-                    <Button className="rounded font-weight-bold" color="primary" block>PENDAFTARAN</Button>
+                    <Button className="shadow" color="primary" block>PENDAFTARAN</Button>
                 </Animated>
             </div>
         </Col>;
@@ -212,19 +212,19 @@ class HsfcCategory extends Component {
                 </div>
                 <Animated animationIn="flipInY" animationOut="flipOutY" className="mt-4" isVisible={isFocus}>
                     <div
-                        className="bg-white p-2 rounded"
+                        className="bg-white p-3 rounded shadow"
                     >
-                        <p className="text-capitalize">
+                        <p className="text-capitalize small">
                         High School Futsal Competition (HSFC) merupakan kegiatan perlombaan futsal yang ditujuan untuk siswa/i SMK/SMA/MA Sederajat.
                         </p>
                         <div className="d-flex justify-content-end">
-                            <Button size="sm" color="outline-success">Lihat Petunjuk</Button>
+                            <Button size="sm" color="secondary" className="shadow">Lihat Petunjuk</Button>
                         </div>
                     </div>
                 </Animated>
                 <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
-                    <Button className="rounded font-weight-bold" color="primary" block>PENDAFTARAN</Button>
-                    <Button className="rounded text-white font-weight-bold" color="warning" block>KONFIRMASI PEMBAYARAN</Button>
+                    <Button className="shadow" color="primary" block>PENDAFTARAN</Button>
+                    <Button className="text-white" color="warning" block>KONFIRMASI PEMBAYARAN</Button>
                 </Animated>
             </div>
         </Col>
