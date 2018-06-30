@@ -5,15 +5,15 @@ import {
   Switch
 } from 'react-router-dom';
 
-import LandingPage from './../landingpage/landingpage';
-import RegisterPage from './../registerpage/registerpage';
-import CeoLoginPage from './../ceologinpage/ceologinpage';
-import CeoRegisterPage from '../ceoregisterpage/ceoregisterpage';
-import CeoPaymentPage from '../ceopaymentpage/ceopaymentpage';
-import ecregisterpage from '../ecregisterpage/ecregisterpage';
-
 import * as routes from '../../constants/routes';
 import {Provider} from '../../context/context';
+import LandingPage from './../landing-page/landingPage';
+import RegisterPage from './../register-page/registerPage';
+import CeoLoginPage from './../ceo-login-page/ceoLoginPage';
+import CeoRegisterPage from '../ceo-register-page/ceoRegisterPage';
+import CeoPaymentPage from '../ceo-payment-page/ceoPaymentPage';
+import ecregisterpage from '../ec-register-page/ecRegisterPage';
+import HsfcRegisterPage from '../hsfc-register-page/hsfcRegisterPage';
 
 let isLogin = false;
 
@@ -49,6 +49,11 @@ const App = () =>
           exact
           path={routes.REGISTER.EC}
           component={ecregisterpage}
+        />
+        <Route
+          exact
+          path={routes.REGISTER.HSFC}
+          component={HsfcRegisterPage}
         />
         <Route
           exact

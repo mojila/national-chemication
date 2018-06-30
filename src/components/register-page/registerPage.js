@@ -223,7 +223,7 @@ class HsfcCategory extends Component {
                     </div>
                 </Animated>
                 <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
-                    <Button className="shadow" color="primary" block>PENDAFTARAN</Button>
+                    <Button className="shadow" color="primary" block tag={Link} to="/daftar/hsfc/1">PENDAFTARAN</Button>
                     <Button className="text-white" color="warning" block tag={Link} to="/payment/hsfc">KONFIRMASI PEMBAYARAN</Button>
                 </Animated>
             </div>

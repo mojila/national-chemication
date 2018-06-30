@@ -246,7 +246,6 @@ class RegisterForm extends Component {
                             size="sm"
                             tag={Link}
                             to={`/daftar/ec/${Number(step)+1}`}
-                            onClick={() => console.log('has clicked')}
                             >
                                 Selanjutnya
                             </Button>
