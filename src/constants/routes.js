@@ -1,7 +1,8 @@
 const ROOT = '/';
 const REGISTER = {
     ROOT: '/daftar',
-    CEO: '/daftar/ceo'
+    CEO: '/daftar/ceo',
+    EC: '/daftar/ec/:step'
 };
 
 const LOGIN = {

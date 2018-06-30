@@ -19,7 +19,7 @@ class RegisterPage extends Component {
     }
 
     render() {
-        return  <Container>
+        return <Container>
             <RegisterCategory/>
         </Container>;
     }
@@ -158,7 +158,7 @@ class EcCategory extends Component {
                     </div>
                 </Animated>
                 <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
-                    <Button className="shadow" color="primary" block>PENDAFTARAN</Button>
+                    <Button className="shadow" color="primary" tag={Link} to="/daftar/ec/1" block>PENDAFTARAN</Button>
                 </Animated>
             </div>
         </Col>;
