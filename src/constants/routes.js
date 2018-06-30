@@ -3,8 +3,13 @@ const REGISTER = {
     ROOT: '/daftar',
     CEO: '/daftar/ceo'
 };
+
 const LOGIN = {
     CEO: '/login/ceo'
 };
 
-export {ROOT, REGISTER, LOGIN};
+const PAYMENT = {
+    CEO: '/payment/ceo'
+};
+
+export {ROOT, REGISTER, LOGIN, PAYMENT};

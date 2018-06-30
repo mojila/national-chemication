@@ -247,7 +247,7 @@ class RegisterForm extends Component {
                     <p className="small text-danger mt-2">
                         {error}
                         {
-                            isPasswordSame
+                            !error && isPasswordSame
                             ? ''
                             : 'Password Tidak Sama'
                         }
