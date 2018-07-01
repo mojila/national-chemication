@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
 
-const LandingPage = () =>
-    <div>
-        Landing
-    </div>;
+class LandingPage extends Component {
+    componentDidMount() {
+        this.props.history.push('/daftar');
+    }
+    
+    render() {
+        return <div>
+            Landing
+        </div>;
+    }
+}
 
-export default LandingPage;
+export default withRouter(LandingPage);
