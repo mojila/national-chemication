@@ -16,22 +16,15 @@ import {
 } from 'reactstrap';
 
 class CeoDashboardPage extends Component {
+    componentDidMount() {
+        document.title = "Dashboard Peserta CEO";
+        document.body.style.background = "#e3e3e3";
+    }
+
     render() {
         return <div>
-            <Navbar className="shadow" color="light" light>
-                <Container>
-                    <NavbarBrand>CEO Dashboard</NavbarBrand>
-                    <Nav className="ml-auto">
-                        <NavItem>
-                            <Button color="light" size="sm" tag={Link} to="/dashboard/ceo" className="shadow rounded mr-4 small">Beranda</Button>
-                        </NavItem>
-                        <NavItem>
-                            <Button size="sm" color="danger" className="shadow">Log Out</Button>
-                        </NavItem>
-                    </Nav>
-                </Container>
-            </Navbar>
-            <Container className="mt-4">
+            <Navigator/>
+            <Container style={{marginTop:'5rem'}}>
                 <Row
                     className="p-3 bg-warning shadow rounded mb-1"
                 >
@@ -41,7 +34,7 @@ class CeoDashboardPage extends Component {
                         </div>
                     </Col>
                     <Col>
-                        <Button size="sm" color="light" className="shadow float-right">Lenkapi Biodata Sekarang</Button>
+                        <Button size="sm" color="light" className="shadow float-right" tag={Link} to="/dashboard/ceo/edit-member/1">Lengkapi Biodata Sekarang</Button>
                     </Col>
                 </Row>
                 <Row
@@ -62,6 +55,25 @@ class CeoDashboardPage extends Component {
                 </Row>
             </Container>
         </div>;
+    }
+}
+
+export class Navigator extends Component {
+    render() {
+        return <Navbar className="shadow" color="light" light fixed="top">
+            <Container>
+                <NavbarBrand>CEO Dashboard</NavbarBrand>
+                <Nav className="ml-auto">
+                    <NavItem>
+                        <Button color="light" size="sm" tag={Link} to="/dashboard/ceo" className="shadow rounded mr-4 small">Beranda</Button>
+                        <Button color="light" size="sm" tag={Link} to="/dashboard/ceo/edit-member/1" className="shadow rounded mr-4 small">Edit Biodata Anggota</Button>
+                    </NavItem>
+                    <NavItem>
+                        <Button size="sm" color="danger" className="shadow">Log Out</Button>
+                    </NavItem>
+                </Nav>
+            </Container>
+        </Navbar>;
     }
 }
 

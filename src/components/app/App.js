@@ -17,6 +17,7 @@ import HsfcRegisterPage from './../hsfc-register-page/hsfcRegisterPage';
 import HsfcPaymentPage from './../hsfc-payment-page/hsfcPaymentPage';
 import AdminLoginPage from './../admin-login-page/adminLoginPage';
 import CeoDashboardPage from './../ceo-dashboard-page/ceoDashboardPage';
+import CeoEditMember from './../ceo-edit-member/ceoEditMember';
 
 let isLogin = false;
 
@@ -77,6 +78,11 @@ const App = () =>
           exact
           path={routes.DASHBOARD.CEO}
           component={CeoDashboardPage}
+        />
+        <Route
+          exact
+          path={routes.DASHBOARD.CEO_EDIT_MEMBER}
+          component={CeoEditMember}
         />
       </Switch>
     </Provider>
