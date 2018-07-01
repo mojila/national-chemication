@@ -16,6 +16,7 @@ import ecregisterpage from './../ec-register-page/ecRegisterPage';
 import HsfcRegisterPage from './../hsfc-register-page/hsfcRegisterPage';
 import HsfcPaymentPage from './../hsfc-payment-page/hsfcPaymentPage';
 import AdminLoginPage from './../admin-login-page/adminLoginPage';
+import CeoDashboardPage from './../ceo-dashboard-page/ceoDashboardPage';
 
 let isLogin = false;
 
@@ -71,6 +72,11 @@ const App = () =>
           exact
           path={routes.PAYMENT.HSFC}
           component={HsfcPaymentPage}
+        />
+        <Route
+          exact
+          path={routes.DASHBOARD.CEO}
+          component={CeoDashboardPage}
         />
       </Switch>
     </Provider>

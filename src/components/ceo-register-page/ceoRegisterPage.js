@@ -52,7 +52,6 @@ const INITIAL_STATE = {
     passwordTwo: '',
     schoolName: '',
     leader: '',
-    leaderPhone: '',
     error: null
 };
 
@@ -80,7 +79,6 @@ class RegisterForm extends Component {
             passwordOne,
             passwordTwo,
             schoolName,
-            leader,
             leaderPhone,
             error
         } = this.state;
@@ -91,7 +89,6 @@ class RegisterForm extends Component {
                     && passwordTwo !== ''
                     && passwordOne === passwordTwo
                     && schoolName !== ''
-                    && leader !== ''
                     && leaderPhone !== '';
         
         let isPasswordSame = passwordOne === passwordTwo;
@@ -185,7 +182,7 @@ class RegisterForm extends Component {
                 </Col>
                 <Col
                     md={{
-                        size:12,
+                        size:6,
                         offset:0
                     }}
                 >
@@ -207,27 +204,10 @@ class RegisterForm extends Component {
                     }}
                 >
                     <FormGroup>
-                        <Label className="small">Nama Ketua</Label>
+                        <Label className="small">Nomor HP/WA/ID Line Ketua</Label>
                         <Input 
                             size="sm"
-                            placeholder="Masukkan nama ketua"
-                            value={leader}
-                            onChange={e => this.setState(byPropKey('leader', e.currentTarget.value))}
-                            required
-                        />
-                    </FormGroup>
-                </Col>
-                <Col
-                    md={{
-                        size:6,
-                        offset:0
-                    }}
-                >
-                    <FormGroup>
-                        <Label className="small">Nomor HP Ketua</Label>
-                        <Input 
-                            size="sm"
-                            placeholder="Masukkan nomor hp ketua"
+                            placeholder="Masukkan nomor hp/WA/ID Line ketua"
                             value={leaderPhone}
                             onChange={e => this.setState(byPropKey('leaderPhone', e.currentTarget.value))}                            
                             required

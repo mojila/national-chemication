@@ -19,7 +19,8 @@ const PAYMENT = {
 
 const DASHBOARD = {
     ADMIN: '/dashboard/admin',
-    CEO: '/dashboard/ceo'
+    CEO: '/dashboard/ceo',
+    CEO_EDIT_MEMBER: 'dashboard/ceo/edit-member'
 };
 
 export {

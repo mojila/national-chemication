@@ -1839,4 +1839,4 @@ class Pemain6sd10Form extends Component {
     }
 }
 
-export default HsfcRegisterPage;
+export default withRouter(HsfcRegisterPage);

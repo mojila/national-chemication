@@ -9,7 +9,7 @@ import {
     Label,
     Button
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
+import {Link,withRouter} from 'react-router-dom';
 import {Animated} from 'react-animated-css';
 
 import bg from './../../statics/images/ceo.jpg';
@@ -166,4 +166,4 @@ class FormLogin extends Component {
     }
 }
 
-export default CeoLoginPage;
+export default withRouter(CeoLoginPage);

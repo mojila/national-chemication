@@ -9,6 +9,9 @@ import {
     Input,
     Button
 } from 'reactstrap';
+import {
+    withRouter
+} from 'react-router-dom';
 
 class AdminLoginPage extends Component {
     componentDidMount() {
@@ -70,4 +73,4 @@ class AdminLoginPage extends Component {
     }
 }
 
-export default AdminLoginPage;
+export default withRouter(AdminLoginPage);

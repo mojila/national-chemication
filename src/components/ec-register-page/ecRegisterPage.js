@@ -448,10 +448,10 @@ class DosenPembimbingForm extends Component {
                             <Label
                                 className="small"
                             >
-                                Nomor HP/Telpon
+                                Nomor WA/ID Line
                             </Label>
                             <Input 
-                                placeholder="Masukkan Nomor HP/Telpon"
+                                placeholder="Masukkan Nomor WA/ID Line"
                                 size="sm"
                             />
                         </FormGroup>
@@ -594,7 +594,7 @@ class IdentitasDiriKetuaForm extends Component {
                                 WA / ID Line
                             </Label>
                             <Input 
-                                placeholder="Masukkan Nomor HP/Telpon"
+                                placeholder="Masukkan Nomor WA/ID Line"
                                 size="sm"
                             />
                         </FormGroup>
@@ -763,7 +763,7 @@ class IdentitasDiriAnggota1Form extends Component {
                                 WA / ID Line
                             </Label>
                             <Input 
-                                placeholder="Masukkan Nomor HP/Telpon"
+                                placeholder="Masukkan WA/ID Line"
                                 size="sm"
                             />
                         </FormGroup>
@@ -932,7 +932,7 @@ class IdentitasDiriAnggota2Form extends Component {
                                 WA / ID Line
                             </Label>
                             <Input 
-                                placeholder="Masukkan Nomor HP/Telpon"
+                                placeholder="Masukkan WA/ID Line"
                                 size="sm"
                             />
                         </FormGroup>
