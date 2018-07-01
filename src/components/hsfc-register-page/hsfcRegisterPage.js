@@ -456,6 +456,10 @@ class Pemain1sd5Form extends Component {
         };
     }
 
+    componentDidMount() {
+        window.scrollTo(0,0);
+    }
+
     onSubmit(e) {
         e.preventDefault();
     }
@@ -594,12 +598,7 @@ class Pemain1sd5Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -719,12 +718,7 @@ class Pemain1sd5Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -844,12 +838,7 @@ class Pemain1sd5Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -969,12 +958,7 @@ class Pemain1sd5Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -1094,12 +1078,7 @@ class Pemain1sd5Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -1173,6 +1152,10 @@ class Pemain6sd10Form extends Component {
         this.state = {
             error: null
         };
+    }
+
+    componentDidMount() {
+        window.scrollTo(0,0);
     }
 
     onSubmit(e) {
@@ -1313,12 +1296,7 @@ class Pemain6sd10Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -1438,12 +1416,7 @@ class Pemain6sd10Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -1563,12 +1536,7 @@ class Pemain6sd10Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -1688,12 +1656,7 @@ class Pemain6sd10Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
@@ -1813,12 +1776,7 @@ class Pemain6sd10Form extends Component {
                             }}
                         >
                             <FormGroup>
-                                <Label className="small">Scan Rapor</Label>
-                                <div
-                                    className="small p-3 bg-secondary rounded text-white text-center mb-1"
-                                >
-                                    Silahkan Unggah Rapor
-                                </div>
+                                <Label className="small">Scan Rapor (Berupa File PDF/DOCX)</Label>
                                 <Input type="file"/>
                             </FormGroup>
                         </Col>
