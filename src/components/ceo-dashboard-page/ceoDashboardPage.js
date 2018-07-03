@@ -15,17 +15,60 @@ import {
     Badge
 } from 'reactstrap';
 
+import {database} from './../../firebase/firebase';
+
+const INITIAL_STATE = {
+    namaTim: '',
+    sekolah: '',
+    lunas: '',
+    error: null
+};
+
 class CeoDashboardPage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {...INITIAL_STATE};
+    }
+    
     componentDidMount() {
+        let uid = localStorage.getItem('uid') || null;
+
         document.title = "Dashboard Peserta CEO";
         document.body.style.background = "#e3e3e3";
+
+        if (uid) {
+            database.ref('/pesertaCeo/' + uid).once('value')
+            .then((snap) => {
+                if(snap.val()) {
+                    let {namaTim, sekolah, lunas, anggota} = snap.val();
+
+                    this.setState({
+                        namaTim,
+                        sekolah,
+                        lunas,
+                        anggota
+                    });
+                } else {
+                    // this.props.history.push('/daftar');                    
+                }
+            })
+            .catch(error => {
+                // this.props.history.push('/daftar');
+            });
+        } else {
+            this.props.history.push('/daftar');
+        }
     }
 
     render() {
+        let {namaTim, sekolah, lunas, anggota} = this.state;
+
         return <div>
             <Navigator/>
             <Container style={{marginTop:'5rem'}}>
-                <Row
+                {!anggota
+                && <Row
                     className="p-3 bg-warning shadow rounded mb-1"
                 >
                     <Col>
@@ -36,8 +79,9 @@ class CeoDashboardPage extends Component {
                     <Col>
                         <Button size="sm" color="light" className="shadow float-right" tag={Link} to="/dashboard/ceo/edit-member/1">Lengkapi Biodata Sekarang</Button>
                     </Col>
-                </Row>
-                <Row
+                </Row>}
+                {!lunas
+                && <Row
                     className="p-3 bg-warning shadow rounded mb-1"
                 >
                     <Col>
@@ -49,19 +93,21 @@ class CeoDashboardPage extends Component {
                     <Col>
                         <div className="d-flex justify-content-end">
                         <Button size="sm" color="light" className="shadow mr-1">Petunjuk Pembayaran</Button>
-                        <Button size="sm" color="success" className="shadow">Konfirmasi Pembayaran</Button>
+                        <Button size="sm" color="success" className="shadow"
+                        tag={Link} to="/payment/ceo">Konfirmasi Pembayaran</Button>
                         </div>
                     </Col>
                 </Row>
+                }
                 <Row
                     className="p-3 bg-white shadow rounded"
                 >
                     <Col>
-                        <div className="small">Nama Tim: nama_team</div>
+                        <div className="small">Nama Tim: {namaTim}</div>
                     </Col>
                     <Col>
-                        <div className="small">Status Pembayaran: Belum Lunas</div>
-                        <div className="small">Status Pendaftaran: Belum Selesai</div>
+                        <div className="small">Status Pembayaran: {lunas ? 'Lunas':'Belum Lunas'}</div>
+                        <div className="small">Status Pendaftaran: {anggota && lunas ? 'Lengkap':'Belum Lengkap'}</div>
                     </Col>
                 </Row>
             </Container>

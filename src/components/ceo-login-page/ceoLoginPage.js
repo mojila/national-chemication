@@ -11,15 +11,22 @@ import {
 } from 'reactstrap';
 import {Link,withRouter} from 'react-router-dom';
 import {Animated} from 'react-animated-css';
+import ReactLoading from 'react-loading';
 
 import bg from './../../statics/images/ceo.jpg';
 import {Consumer} from './../../context/context';
 
 class CeoLoginPage extends Component {
     componentDidMount() {
+        let uid = localStorage.getItem('uid') || null;
+
         document.title = "Login Peserta CEO";
         document.body.style.background = "url('"+bg+"')";
         document.body.style.backgroundSize = "cover";
+
+        if (uid) {
+            this.props.history.push('/dashboard/ceo');
+        }
     }
     
     render() {
@@ -125,7 +132,12 @@ class FormLogin extends Component {
                             offset:1
                         }}
                     >
-                        <Button className="text-uppercase shadow" color="success" block>Login</Button>
+                        <Button className="text-uppercase shadow" color="success" block
+                            disabled={ceoLogin.email.length < 4 || ceoLogin.password.length < 4}
+                        >
+                            {ceoLogin.isLoading && <ReactLoading type="spin" color="white" height={24} width={24} className="ml-auto mr-auto" />}
+                            {!ceoLogin.isLoading && 'Login'}
+                        </Button>
                     </Col>
                 </Row>
                 <Row 
@@ -134,7 +146,8 @@ class FormLogin extends Component {
                     <Col>
                         <p className="small text-center">
                             Belum Daftar ? Silahkan 
-                            | <Button className="shadow" size="sm" color="primary" tag={Link} to="/daftar/ceo">Daftar Disini</Button>
+                            | <Button className="shadow" size="sm" color="primary" tag={Link} to="/daftar/ceo"
+                            >Daftar Disini</Button>
                         </p>
                     </Col>
                 </Row>

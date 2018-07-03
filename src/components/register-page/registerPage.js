@@ -93,7 +93,6 @@ class CeoCategory extends Component {
                 <Animated animationIn="fadeInUp" animationOut="fadeOutDown" className="mt-4" isVisible={isFocus}>
                     <Button className="text-uppercase shadow" color="success" block tag={Link} to="/login/ceo">login</Button>
                     <Button className="text-uppercase shadow" color="primary" block tag={Link} to="/daftar/ceo">pendaftaran</Button>
-                    <Button className="text-uppercase text-white shadow" color="warning" block tag={Link} to="/payment/ceo">konfirmasi pembayaran</Button>
                 </Animated>
             </div>
         </Col>

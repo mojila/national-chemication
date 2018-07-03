@@ -31,7 +31,8 @@ const INITIAL_STATE = {
     ceoLogin: {
         error: null,
         email: '',
-        password: ''
+        password: '',
+        isLoading: false
     },
     ceoPayment: {
         sekolah: '',
@@ -70,14 +71,24 @@ class Provider extends Component {
         // this.onCeoPaymentSekolah = this.onCeoPaymentSekolah.bind(this);
         // this.onCeoPaymentNamaTim = this.onCeoPaymentNamaTim.bind(this);
         this.onCeoPaymentFile = this.onCeoPaymentFile.bind(this);
+        this.onCeoPayment = this.onCeoPayment.bind(this);
 
         this.state = {...INITIAL_STATE};
+    }
+
+    componentDidMount() {
+        let {ceoPayment} = this.state;
+        
+        database.ref('/buktiPembayaran/file').once('value').then((snap) => {
+            ceoPayment.file = snap.val();
+
+            this.setState({...ceoPayment});
+        })
     }
 
     // CEO Payment
     onCeoPaymentFile(e) {
         let {ceoPayment} = this.state;
-        let {file} = ceoPayment;
 
         if (e.target.files && e.target.files[0]) {
             let reader = new FileReader();
@@ -90,6 +101,16 @@ class Provider extends Component {
 
             reader.readAsDataURL(e.target.files[0]);
         }
+    }
+    onCeoPayment(e) {
+        let {ceoPayment} = this.state;
+        let {file} = ceoPayment;
+
+        database.ref('/buktiPembayaran').set({
+            file
+        });
+
+        e.preventDefault();
     }
 
     // CEO Register
@@ -202,6 +223,9 @@ class Provider extends Component {
     onCeoLogin(e) {
         let {ceoLogin} = this.state;
         let {email,password} = ceoLogin;
+        
+        ceoLogin.isLoading = true;
+        this.setState({...ceoLogin});
 
         auth.signInWithEmailAndPassword(email,password)
         .then(() => {
@@ -210,21 +234,31 @@ class Provider extends Component {
             database.ref('/pesertaCeo/' + uid).once('value')
             .then((snapshot) => {
                 if(snapshot.val() !== null) {
+                    localStorage.setItem('uid', uid);
+
+                    ceoLogin.isLoading = false;
+                    this.setState({...ceoLogin});
+
                     this.props.history.push('/dashboard/ceo');
                 } else {
                     ceoLogin.error = {
                         message: 'Data Pengguna Tidak Ditemukan'
                     };
+                    ceoLogin.isLoading = false;
 
                     this.setState({...ceoLogin});
                 }
             })
             .catch(error => {
+                ceoLogin.isLoading = false;
+
                 this.setState({...ceoLogin});
             })
         })
         .catch(error => {
             ceoLogin.error = error;
+            ceoLogin.isLoading = false;
+
             this.setState({...ceoLogin});
         });
 
@@ -278,7 +312,12 @@ class Provider extends Component {
     }
 
     render() {
-        let {ecRegister,ceoLogin,ceoRegister} = this.state;
+        let {
+            ecRegister,
+            ceoLogin,
+            ceoRegister,
+            ceoPayment
+        } = this.state;
 
         return <MyContext.Provider
             value={{
@@ -320,6 +359,13 @@ class Provider extends Component {
                         this.onCeoRegisterSekolah,
                     onContactChange:
                         this.onCeoRegisterContact
+                },
+                ceoPayment: {
+                    ...ceoPayment,
+                    onFileChange:
+                        this.onCeoPaymentFile,
+                    onCeoPayment:
+                        this.onCeoPayment
                 }
             }}
         >

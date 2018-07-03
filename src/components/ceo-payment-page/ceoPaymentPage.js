@@ -11,23 +11,61 @@ import {
     FormGroup,
     Input,
     Label,
-    Button,
-    Progress
+    Button
 } from 'reactstrap';
 import {Animated} from 'react-animated-css';
 
 import bg from './../../statics/images/ceo.jpg';
 import {Consumer} from './../../context/context';
+import {Navigator} from './../ceo-dashboard-page/ceoDashboardPage';
+import {database} from './../../firebase/firebase';
+
+const INITIAL_STATE = {
+    namaTim: '',
+    error: null
+};
 
 class CeoPaymentPage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {...INITIAL_STATE};
+    }
+
     componentDidMount() {
+        let uid = localStorage.getItem('uid') || null;
+
         document.title = "Bukti Pembayaran Peserta CEO";
         document.body.style.background = "url('"+bg+"')";
         document.body.style.backgroundSize = "cover";
+
+        if (uid) {
+            database.ref('/pesertaCeo/' + uid).once('value')
+            .then((snap) => {
+                let {namaTim} = snap.val();
+
+                if (snap) {
+                    this.setState({
+                        namaTim
+                    });
+                } else {
+
+                }
+            })
+            .catch(error => {
+
+            })
+        } else {
+            this.props.history.push('/daftar')
+        }
     }
 
     render() {
-        return <Container 
+        let {namaTim} = this.state;
+        
+        return <div>
+        <Navigator/>
+        <Container 
             className="mt-md-5 mb-5"
         >
             <Row>
@@ -41,63 +79,27 @@ class CeoPaymentPage extends Component {
                         animationIn="flipInY"
                         isVisible
                     >
-                        <PaymentForm/>
+                        <PaymentForm namaTim={namaTim}/>
                     </Animated>
                 </Col>
             </Row>
-        </Container>;
+        </Container>
+        </div>;
     }
 }
 
-const INITIAL_STATE = {
-    error: null,
-    imagePreview: null
-};
-
-const byKeyProp = (propertyName, value) => () => ({
-    [propertyName]: value
-});
-
 class PaymentForm extends Component {
-    constructor(props) {
-        super(props);
-
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onUpload = this.onUpload.bind(this);
-
-        this.state = {...INITIAL_STATE};
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-    }
-
-    onUpload(event) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-
-            reader.onload = (e) => {
-                this.setState(byKeyProp('imagePreview', e.target.result));
-            };
-
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    }
-    
     render() {
-        let {imagePreview} = this.state;
+        let {namaTim} = this.props;
 
         return <Consumer>
         {({ceoPayment}) =>
-        <Form onSubmit={this.onSubmit} encType="multipart/form-data">
+        <Form className="mt-md-4" onSubmit={ceoPayment.onCeoPayment} encType="multipart/form-data">
             <Row
                 className="mb-1 p-3 bg-white shadow rounded"
             >
                 <Col>
-                    <Button size="sm" color="light" className="mt-2 shadow" tag={Link} to="/daftar">Beranda</Button>
-                </Col>
-                <Col>
-                    <p className="mt-1 h6 text-uppercase text-right">
+                    <p className="mt-1 h6 text-uppercase text-center">
                         Konfirmasi Pembayaran
                     </p>
                 </Col>
@@ -105,34 +107,15 @@ class PaymentForm extends Component {
             <Row
                 className="mb-1 p-3 bg-white shadow rounded"
             >
-                <Col
-                    md={{
-                        size:6,
-                        offset:0
-                    }}
-                >
-                    <FormGroup>
-                        <Label className="small">Nama Sekolah</Label>
-                        <Input 
-                            size="sm"
-                            placeholder="Masukkan nama sekolah"
-                        />
-                    </FormGroup>
+                <Col>
+                    <p className="mt-1 h6 text-uppercase text-left">
+                        Nama Tim: {namaTim}
+                    </p>
                 </Col>
-                <Col
-                    md={{
-                        size:6,
-                        offset:0
-                    }}
-                >
-                    <FormGroup>
-                        <Label className="small">Nama Tim</Label>
-                        <Input 
-                            size="sm"
-                            placeholder="Masukkan nama tim"
-                        />
-                    </FormGroup>
-                </Col>
+            </Row>
+            <Row
+                className="mb-1 p-3 bg-white shadow rounded"
+            >
                 <Col
                     md={{
                         size:12,
@@ -149,33 +132,16 @@ class PaymentForm extends Component {
                 >
                     <div 
                         className="bg-secondary p-3 rounded text-center text-capitalize small text-white">
-                        {imagePreview
-                            ? <img src={imagePreview} alt="Bukti Transfer" className="img-fluid"/>
+                        {ceoPayment.file
+                            ? <img src={ceoPayment.file} alt="Bukti Transfer" className="img-fluid" />
                             : 'Silahkan upload bukti'
                         }
                     </div>
                 </Col>
-                <Col
-                    md={{
-                        size:6,
-                        offset:0
-                    }}
-                >
+                <Col>
                     <FormGroup className="mt-1">
-                        <Input type="file" className="small" onChange={this.onUpload}/>
+                        <Input type="file" className="small" onChange={ceoPayment.onFileChange}/>
                     </FormGroup>
-                </Col>
-                <Col
-                    md={{
-                        size:6,
-                        offset:0
-                    }}
-                >
-                    <Progress
-                        value={10}
-                        className="mt-2"
-                        color="success"
-                    />
                 </Col>
             </Row>
             <Row
