@@ -17,6 +17,7 @@ import {
 import {Animated} from 'react-animated-css';
 
 import bg from './../../statics/images/ceo.jpg';
+import {Consumer} from './../../context/context';
 
 class CeoPaymentPage extends Component {
     componentDidMount() {
@@ -86,7 +87,9 @@ class PaymentForm extends Component {
     render() {
         let {imagePreview} = this.state;
 
-        return <Form onSubmit={this.onSubmit} encType="multipart/form-data">
+        return <Consumer>
+        {({ceoPayment}) =>
+        <Form onSubmit={this.onSubmit} encType="multipart/form-data">
             <Row
                 className="mb-1 p-3 bg-white shadow rounded"
             >
@@ -187,7 +190,8 @@ class PaymentForm extends Component {
                     <Button className="float-right shadow" color="primary" block>Konfirmasi</Button>
                 </Col>
             </Row>
-        </Form>
+        </Form>}
+        </Consumer>;
     }
 }
 

@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import * as routes from './../../constants/routes';
-import {Provider} from './../../context/context';
+import Provider from './../../context/context';
 import LandingPage from './../landing-page/landingPage';
 import RegisterPage from './../register-page/registerPage';
 import CeoLoginPage from './../ceo-login-page/ceoLoginPage';
@@ -18,16 +18,12 @@ import HsfcPaymentPage from './../hsfc-payment-page/hsfcPaymentPage';
 import AdminLoginPage from './../admin-login-page/adminLoginPage';
 import CeoDashboardPage from './../ceo-dashboard-page/ceoDashboardPage';
 import CeoEditMember from './../ceo-edit-member/ceoEditMember';
-
-let isLogin = false;
+import AdminDashboardPage from './../admin-dashboard-page/adminDashboardPage';
+import PesertaCeoPage from './../peserta-ceo-page/pesertaCeoPage';
 
 const App = () =>
   <Router>
     <Provider>
-      {
-        isLogin
-        && <div>NavbarLogin</div>
-      }
       <Switch>
         <Route
           exact
@@ -78,6 +74,16 @@ const App = () =>
           exact
           path={routes.DASHBOARD.CEO}
           component={CeoDashboardPage}
+        />
+        <Route
+          exact
+          path={routes.DASHBOARD.ADMIN}
+          component={AdminDashboardPage}
+        />
+        <Route
+          exact
+          path={routes.DASHBOARD.ADMIN_PESERTA_CEO}
+          component={PesertaCeoPage}
         />
         <Route
           exact

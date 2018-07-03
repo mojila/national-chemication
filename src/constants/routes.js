@@ -19,6 +19,9 @@ const PAYMENT = {
 
 const DASHBOARD = {
     ADMIN: '/dashboard/admin',
+    ADMIN_PESERTA_CEO: '/dashboard/admin/peserta/ceo',
+    ADMIN_PESERTA_EC: '/dashboard/admin/peserta/ec',
+    ADMIN_PESERTA_HSFC: '/dashboard/admin/peserta/hsfc',
     CEO: '/dashboard/ceo',
     CEO_EDIT_MEMBER: '/dashboard/ceo/edit-member/:step'
 };

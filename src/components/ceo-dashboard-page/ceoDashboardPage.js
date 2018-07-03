@@ -38,7 +38,7 @@ class CeoDashboardPage extends Component {
                     </Col>
                 </Row>
                 <Row
-                    className="p-3 bg-warning shadow rounded"
+                    className="p-3 bg-warning shadow rounded mb-1"
                 >
                     <Col>
                         <div className="small text-capitalize">
@@ -51,6 +51,17 @@ class CeoDashboardPage extends Component {
                         <Button size="sm" color="light" className="shadow mr-1">Petunjuk Pembayaran</Button>
                         <Button size="sm" color="success" className="shadow">Konfirmasi Pembayaran</Button>
                         </div>
+                    </Col>
+                </Row>
+                <Row
+                    className="p-3 bg-white shadow rounded"
+                >
+                    <Col>
+                        <div className="small">Nama Tim: nama_team</div>
+                    </Col>
+                    <Col>
+                        <div className="small">Status Pembayaran: Belum Lunas</div>
+                        <div className="small">Status Pendaftaran: Belum Selesai</div>
                     </Col>
                 </Row>
             </Container>

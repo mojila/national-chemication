@@ -14,8 +14,10 @@ import {
     Link
 } from 'react-router-dom';
 import {Animated} from 'react-animated-css';
+import ReactLoading from 'react-loading';
 
 import bg from './../../statics/images/ceo.jpg';
+import {Consumer} from './../../context/context';
 
 class CeoRegisterPage extends Component {
     componentDidMount() {
@@ -26,7 +28,7 @@ class CeoRegisterPage extends Component {
     
     render() {
         return <Container
-            className="mt-md-4"
+            className="mt-md-4 mb-4"
         >
             <Row>
                 <Col 
@@ -45,57 +47,11 @@ class CeoRegisterPage extends Component {
     }
 }
 
-const INITIAL_STATE = {
-    teamName: '',
-    email: '',
-    passwordOne: '',
-    passwordTwo: '',
-    schoolName: '',
-    leader: '',
-    error: null
-};
-
-const byPropKey = (propertyName, value) => () => ({
-    [propertyName]: value
-});
-
 class RegisterForm extends Component {
-    constructor(props) {
-        super(props);
-
-        this.onSubmit = this.onSubmit.bind(this);
-
-        this.state = {...INITIAL_STATE};
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-    }
-
     render() {
-        let {
-            teamName,
-            email,
-            passwordOne,
-            passwordTwo,
-            schoolName,
-            leaderPhone,
-            error
-        } = this.state;
-
-        let isValid = teamName !== ''
-                    && email !== ''
-                    && passwordOne !== ''
-                    && passwordTwo !== ''
-                    && passwordOne === passwordTwo
-                    && schoolName !== ''
-                    && leaderPhone !== '';
-        
-        let isPasswordSame = passwordOne === passwordTwo;
-
-        return <Form 
-            onSubmit={this.onSubmit}
-        >
+        return <Consumer>
+        {({ceoRegister}) =>
+            <Form onSubmit={ceoRegister.onRegister}>
             <Row 
                 className="bg-white p-3 shadow rounded mb-1"
             >
@@ -106,6 +62,22 @@ class RegisterForm extends Component {
                     <p className="h6 text-uppercase mt-1 text-right">Pendaftaran Akun</p>
                 </Col>
             </Row>
+            {ceoRegister.isSuccess
+            && <Row
+                className="bg-success p-3 shadow rounded mb-1"
+            >
+                <Col>
+                    <p className="text-white m-0 p-0 small">Pendaftaran Berhasil Silahkan Login.</p>
+                </Col>
+                <Col>
+                    <Button size="sm" color="light" className="shadow float-right"
+                        tag={Link}
+                        to="/login/ceo"
+                    >
+                        Login
+                    </Button>
+                </Col>
+            </Row>}
             <Row
                 className="bg-white p-3 shadow rounded mb-1"
             >
@@ -120,8 +92,8 @@ class RegisterForm extends Component {
                         <Input 
                             size="sm" 
                             placeholder="Masukkan nama team" 
-                            value={teamName}
-                            onChange={e => this.setState(byPropKey('teamName', e.currentTarget.value))} 
+                            value={ceoRegister.namaTim}
+                            onChange={ceoRegister.onNamaTimChange}
                             required
                         />
                     </FormGroup>
@@ -138,8 +110,8 @@ class RegisterForm extends Component {
                             type="email" 
                             size="sm"
                             placeholder="Masukkan email"
-                            value={email}
-                            onChange={e => this.setState(byPropKey('email', e.currentTarget.value))}  
+                            value={ceoRegister.email}
+                            onChange={ceoRegister.onEmailChange}
                             required
                         />
                     </FormGroup>
@@ -156,8 +128,8 @@ class RegisterForm extends Component {
                             size="sm" 
                             type="password" 
                             placeholder="Masukkan Password"
-                            value={passwordOne}
-                            onChange={e => this.setState(byPropKey('passwordOne', e.currentTarget.value))}
+                            value={ceoRegister.passwordOne}
+                            onChange={ceoRegister.onPasswordOneChange}
                             required
                         />
                     </FormGroup>
@@ -174,8 +146,8 @@ class RegisterForm extends Component {
                             size="sm" 
                             type="password"
                             placeholder="Masukkan Password Lagi"
-                            value={passwordTwo}
-                            onChange={e => this.setState(byPropKey('passwordTwo', e.currentTarget.value))} 
+                            value={ceoRegister.passwordTwo}
+                            onChange={ceoRegister.onPasswordTwoChange}
                             required
                         />
                     </FormGroup>
@@ -191,8 +163,8 @@ class RegisterForm extends Component {
                         <Input 
                             size="sm" 
                             placeholder="Masukkan nama sekolah"
-                            value={schoolName}
-                            onChange={e => this.setState(byPropKey('schoolName', e.currentTarget.value))}
+                            value={ceoRegister.sekolah}
+                            onChange={ceoRegister.onSekolahChange}
                             required
                         />
                     </FormGroup>
@@ -208,41 +180,60 @@ class RegisterForm extends Component {
                         <Input 
                             size="sm"
                             placeholder="Masukkan nomor hp/WA/ID Line ketua"
-                            value={leaderPhone}
-                            onChange={e => this.setState(byPropKey('leaderPhone', e.currentTarget.value))}                            
+                            value={ceoRegister.contact}
+                            onChange={ceoRegister.onContactChange}
                             required
                         />
                     </FormGroup>
                 </Col>
             </Row>
+            {ceoRegister.passwordOne !== ceoRegister.passwordTwo
+            && <Animated animationIn="fadeIn" animationOut="fadeOut" isVisible>
+                <Row className="bg-danger p-3 shadow rounded mb-1">
+                    <Col>
+                        <p className="text-white small p-0 m-0">
+                        {ceoRegister.passwordOne !== ceoRegister.passwordTwo
+                        && 'Password Tidak sama'
+                        }
+                        </p>
+                    </Col>
+                </Row>
+            </Animated>
+            }
+            {ceoRegister.passwordOne.length > 0
+            && ceoRegister.passwordOne.length < 8
+            && <Animated animationIn="fadeIn" animationOut="fadeOut" isVisible>
+                <Row className="bg-danger p-3 shadow rounded mb-1">
+                    <Col>
+                        <p className="text-white small p-0 m-0">
+                        {ceoRegister.passwordOne.length < 8
+                        && 'Password Minimal 8 Karakter Dengan Kombinasi Angka dan Huruf'
+                        }
+                        </p>
+                    </Col>
+                </Row>
+            </Animated>
+            }
             <Row
                 className="bg-white p-3 shadow rounded"
             >
-                <Col 
-                    md={{
-                        size:8,
-                        offset:0
-                    }} 
-                >
-                    <p className="small text-danger mt-2">
-                        {error}
-                        {
-                            !error && isPasswordSame
-                            ? ''
-                            : 'Password Tidak Sama'
-                        }
-                    </p>
-                </Col>
                 <Col
                     md={{
                         size:4,
-                        offset:0
+                        offset:8
                     }}
                 >
-                    <Button className="float-right mt-1 shadow" size="sm" color="primary" block disabled={!isValid}>Daftar</Button>
+                    <Button className="float-right mt-1 shadow" size="sm" color="primary" block
+                        disabled={(ceoRegister.passwordOne.length < 8) || (ceoRegister.passwordOne !== ceoRegister.passwordTwo)}
+                    >
+                        {ceoRegister.isLoading && <ReactLoading type="spin" color="white" height={24} width={24} className="ml-auto mr-auto" />}
+                        {!ceoRegister.isLoading && 'Daftar'}
+                    </Button>
                 </Col>
             </Row>
-        </Form>;
+        </Form>
+        }
+        </Consumer>;
     }
 }
     
