@@ -202,13 +202,14 @@ class IdentitasKetuaForm extends Component {
             };
 
             updates['/pesertaCeo/' + uid] = postData;
-            database.ref().update(updates);
-
-            this.setState({
-                isLoading: false
+            database.ref().update(updates)
+            .then(() => {
+                this.setState({
+                    isLoading: false
+                });
+    
+                history.push('/dashboard/ceo/edit-member/2');
             });
-
-            history.push('/dashboard/ceo/edit-member/2');
         })
 
         e.preventDefault();
@@ -248,7 +249,7 @@ class IdentitasKetuaForm extends Component {
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
                                     {foto
-                                    ? <img className="img-fluid" src={foto}/>
+                                    ? <img className="img-fluid" src={foto} alt="Foto"/>
                                     : 'Silahkan Unggah Foto'}
                                 </div>
                                 <Input className="small" onChange={this.onFotoUpload} type="file"/>
@@ -265,7 +266,7 @@ class IdentitasKetuaForm extends Component {
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
                                     {tandaPengenalSiswa
-                                    ? <img className="img-fluid" src={tandaPengenalSiswa}/>
+                                    ? <img className="img-fluid" src={tandaPengenalSiswa} alt="Tanda Pengenal Siswa"/>
                                     : 'Silahkan Unggah Tanda Pengenal Siswa'}
                                 </div>
                                 <Input className="small" type="file"
@@ -382,13 +383,14 @@ class IdentitasAnggota1Form extends Component {
             };
 
             updates['/pesertaCeo/' + uid] = postData;
-            database.ref().update(updates);
-
-            this.setState({
-                isLoading: false
+            database.ref().update(updates)
+            .then(() => {
+                this.setState({
+                    isLoading: false
+                });
+    
+                history.push('/dashboard/ceo/edit-member/3');
             });
-
-            history.push('/dashboard/ceo/edit-member/3');
         })
 
         e.preventDefault();
@@ -428,7 +430,7 @@ class IdentitasAnggota1Form extends Component {
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
                                     {foto
-                                    ? <img className="img-fluid" src={foto}/>
+                                    ? <img className="img-fluid" src={foto} alt="Foto"/>
                                     : 'Silahkan Unggah Foto'}
                                 </div>
                                 <Input className="small" onChange={this.onFotoUpload} type="file"/>
@@ -445,7 +447,7 @@ class IdentitasAnggota1Form extends Component {
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
                                     {tandaPengenalSiswa
-                                    ? <img className="img-fluid" src={tandaPengenalSiswa}/>
+                                    ? <img className="img-fluid" src={tandaPengenalSiswa} alt="Tanda Pengenal Siswa"/>
                                     : 'Silahkan Unggah Tanda Pengenal Siswa'}
                                 </div>
                                 <Input className="small" type="file"
@@ -565,13 +567,14 @@ class IdentitasAnggota2Form extends Component {
             };
 
             updates['/pesertaCeo/' + uid] = postData;
-            database.ref().update(updates);
-
-            this.setState({
-                isLoading: false
+            database.ref().update(updates)
+            .then(() => {
+                this.setState({
+                    isLoading: false
+                });
+    
+                history.push('/dashboard/ceo');
             });
-
-            history.push('/dashboard/ceo');
         })
 
         e.preventDefault();
@@ -611,7 +614,7 @@ class IdentitasAnggota2Form extends Component {
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
                                     {foto
-                                    ? <img className="img-fluid" src={foto}/>
+                                    ? <img className="img-fluid" src={foto} alt="foto"/>
                                     : 'Silahkan Unggah Foto'}
                                 </div>
                                 <Input className="small" onChange={this.onFotoUpload} type="file"/>
@@ -628,7 +631,7 @@ class IdentitasAnggota2Form extends Component {
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
                                     {tandaPengenalSiswa
-                                    ? <img className="img-fluid" src={tandaPengenalSiswa}/>
+                                    ? <img className="img-fluid" src={tandaPengenalSiswa} alt="Tanda Pengenal Siswa"/>
                                     : 'Silahkan Unggah Tanda Pengenal Siswa'}
                                 </div>
                                 <Input className="small" type="file"
