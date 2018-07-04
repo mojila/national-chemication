@@ -135,6 +135,22 @@ class IdentitasKetuaForm extends Component {
     
     componentDidMount() {
         window.scrollTo(0,0);
+        let uid = localStorage.getItem('uid');
+
+        this.setState(byKeyProp('isLoading', true));
+        database.ref('/pesertaCeo/' + uid).once('value')
+        .then((snap) => {
+            let {ketua} = snap.val();
+
+            if (ketua) {
+                this.setState({
+                    nama: ketua.nama,
+                    foto: ketua.foto,
+                    tandaPengenalSiswa: ketua.tandaPengenalSiswa,
+                    isLoading: false
+                });
+            }
+        });
     }
 
     onFotoUpload(event) {
@@ -280,18 +296,107 @@ class IdentitasAnggota1Form extends Component {
     constructor(props) {
         super(props);
 
+        this.onFotoUpload = this.onFotoUpload.bind(this);
+        this.onTandaPengenalSiswaUpload = this.onTandaPengenalSiswaUpload.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+
+        this.state = {
+            error: null,
+            nama: '',
+            foto: null,
+            tandaPengenalSiswa: null,
+            isLoading: false
+        }
     }
 
     componentDidMount() {
         window.scrollTo(0,0);
+        let uid = localStorage.getItem('uid');
+
+        this.setState(byKeyProp('isLoading', true));
+        database.ref('/pesertaCeo/' + uid).once('value')
+        .then((snap) => {
+            let {anggota1} = snap.val();
+
+            if (anggota1) {
+                this.setState({
+                    nama: anggota1.nama,
+                    foto: anggota1.foto,
+                    tandaPengenalSiswa: anggota1.tandaPengenalSiswa,
+                    isLoading: false
+                });
+            } else {
+                this.setState({
+                    isLoading: false
+                });
+            }
+        });
     }
     
+    onFotoUpload(event) {
+        this.setState(byKeyProp('isLoading', true));
+
+        if (event.target.files && event.target.files[0]) {
+            let read = new FileReader();
+
+            read.onload = (e) => {
+                this.setState(byKeyProp('foto', e.target.result));
+                this.setState(byKeyProp('isLoading', false));
+            }
+
+            read.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    onTandaPengenalSiswaUpload(event) {
+        this.setState(byKeyProp('isLoading', true));
+
+        if (event.target.files && event.target.files[0]) {
+            let read = new FileReader();
+
+            read.onload = (e) => {
+                this.setState(byKeyProp('tandaPengenalSiswa', e.target.result));
+                this.setState(byKeyProp('isLoading', false));
+            }
+
+            read.readAsDataURL(event.target.files[0]);
+        }
+    } 
+
     onSubmit(e) {
+        let uid = localStorage.getItem('uid');
+        let {nama, foto, tandaPengenalSiswa} = this.state;
+        let {history} = this.props;
+        let postData = {};
+        let updates = {};
+
+        this.setState(byKeyProp('isLoading', true));
+
+        database.ref('/pesertaCeo/' + uid).once('value')
+        .then((snap) => {
+            postData = snap.val();
+            postData.anggota1 = {
+                nama,
+                foto,
+                tandaPengenalSiswa
+            };
+
+            updates['/pesertaCeo/' + uid] = postData;
+            database.ref().update(updates);
+
+            this.setState({
+                isLoading: false
+            });
+
+            history.push('/dashboard/ceo/edit-member/3');
+        })
+
         e.preventDefault();
     }
 
     render() {
+        let {nama, foto, tandaPengenalSiswa, isLoading} = this.state;
+
         return <Row className="mt-4 mb-4">
             <Col
                 md={{size:6,offset:3}}
@@ -306,7 +411,10 @@ class IdentitasAnggota1Form extends Component {
                         <Col md="12">
                             <FormGroup>
                                 <Label className="small">Nama</Label>
-                                <Input size="sm" placeholder="Masukkan nama"/>
+                                <Input size="sm" placeholder="Masukkan nama"
+                                onChange={e => this.setState(byKeyProp('nama', e.target.value))}
+                                value={nama}
+                                />
                             </FormGroup>
                         </Col>
                         <Col md="12">
@@ -319,9 +427,11 @@ class IdentitasAnggota1Form extends Component {
                                 <div
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
-                                    Silahkan Unggah Foto
+                                    {foto
+                                    ? <img className="img-fluid" src={foto}/>
+                                    : 'Silahkan Unggah Foto'}
                                 </div>
-                                <Input size="sm" type="file"/>
+                                <Input className="small" onChange={this.onFotoUpload} type="file"/>
                             </FormGroup>
                         </Col>
                         <Col md="12">
@@ -334,9 +444,13 @@ class IdentitasAnggota1Form extends Component {
                                 <div
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
-                                    Silahkan Unggah Foto
+                                    {tandaPengenalSiswa
+                                    ? <img className="img-fluid" src={tandaPengenalSiswa}/>
+                                    : 'Silahkan Unggah Tanda Pengenal Siswa'}
                                 </div>
-                                <Input size="sm" type="file"/>
+                                <Input className="small" type="file"
+                                onChange={this.onTandaPengenalSiswaUpload}
+                                />
                             </FormGroup>
                         </Col>
                     </Row>
@@ -345,7 +459,14 @@ class IdentitasAnggota1Form extends Component {
                             <Button color="light" className="shadow" size="sm" block tag={Link} to="/dashboard/ceo/edit-member/1">Sebelumnya</Button>
                         </Col>
                         <Col md="6">
-                            <Button color="primary" className="shadow" size="sm" block>Selanjutnya</Button>
+                            <Button color="primary" className="shadow" size="sm" block
+                            disabled={!nama || !foto || !tandaPengenalSiswa}
+                            >
+                            {isLoading
+                            && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                            {!isLoading
+                            && 'Selanjutnya'}
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
@@ -358,18 +479,107 @@ class IdentitasAnggota2Form extends Component {
     constructor(props) {
         super(props);
 
+        this.onFotoUpload = this.onFotoUpload.bind(this);
+        this.onTandaPengenalSiswaUpload = this.onTandaPengenalSiswaUpload.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+
+        this.state = {
+            error: null,
+            nama: '',
+            foto: null,
+            tandaPengenalSiswa: null,
+            isLoading: false
+        }
     }
 
     componentDidMount() {
         window.scrollTo(0,0);
+        let uid = localStorage.getItem('uid');
+
+        this.setState(byKeyProp('isLoading', true));
+        database.ref('/pesertaCeo/' + uid).once('value')
+        .then((snap) => {
+            let {anggota2} = snap.val();
+
+            if (anggota2) {
+                this.setState({
+                    nama: anggota2.nama,
+                    foto: anggota2.foto,
+                    tandaPengenalSiswa: anggota2.tandaPengenalSiswa,
+                    isLoading: false
+                });
+            } else {
+                this.setState({
+                    isLoading: false
+                });
+            }
+        });
     }
     
+    onFotoUpload(event) {
+        this.setState(byKeyProp('isLoading', true));
+
+        if (event.target.files && event.target.files[0]) {
+            let read = new FileReader();
+
+            read.onload = (e) => {
+                this.setState(byKeyProp('foto', e.target.result));
+                this.setState(byKeyProp('isLoading', false));
+            }
+
+            read.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    onTandaPengenalSiswaUpload(event) {
+        this.setState(byKeyProp('isLoading', true));
+
+        if (event.target.files && event.target.files[0]) {
+            let read = new FileReader();
+
+            read.onload = (e) => {
+                this.setState(byKeyProp('tandaPengenalSiswa', e.target.result));
+                this.setState(byKeyProp('isLoading', false));
+            }
+
+            read.readAsDataURL(event.target.files[0]);
+        }
+    } 
+
     onSubmit(e) {
+        let uid = localStorage.getItem('uid');
+        let {nama, foto, tandaPengenalSiswa} = this.state;
+        let {history} = this.props;
+        let postData = {};
+        let updates = {};
+
+        this.setState(byKeyProp('isLoading', true));
+
+        database.ref('/pesertaCeo/' + uid).once('value')
+        .then((snap) => {
+            postData = snap.val();
+            postData.anggota2 = {
+                nama,
+                foto,
+                tandaPengenalSiswa
+            };
+
+            updates['/pesertaCeo/' + uid] = postData;
+            database.ref().update(updates);
+
+            this.setState({
+                isLoading: false
+            });
+
+            history.push('/dashboard/ceo');
+        })
+
         e.preventDefault();
     }
 
     render() {
+        let {nama, foto, tandaPengenalSiswa, isLoading} = this.state;
+
         return <Row className="mt-4 mb-4">
             <Col
                 md={{size:6,offset:3}}
@@ -384,7 +594,10 @@ class IdentitasAnggota2Form extends Component {
                         <Col md="12">
                             <FormGroup>
                                 <Label className="small">Nama</Label>
-                                <Input size="sm" placeholder="Masukkan nama"/>
+                                <Input size="sm" placeholder="Masukkan nama"
+                                onChange={e => this.setState(byKeyProp('nama', e.target.value))}
+                                value={nama}
+                                />
                             </FormGroup>
                         </Col>
                         <Col md="12">
@@ -397,9 +610,11 @@ class IdentitasAnggota2Form extends Component {
                                 <div
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
-                                    Silahkan Unggah Foto
+                                    {foto
+                                    ? <img className="img-fluid" src={foto}/>
+                                    : 'Silahkan Unggah Foto'}
                                 </div>
-                                <Input size="sm" type="file"/>
+                                <Input className="small" onChange={this.onFotoUpload} type="file"/>
                             </FormGroup>
                         </Col>
                         <Col md="12">
@@ -412,18 +627,29 @@ class IdentitasAnggota2Form extends Component {
                                 <div
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
-                                    Silahkan Unggah Foto
+                                    {tandaPengenalSiswa
+                                    ? <img className="img-fluid" src={tandaPengenalSiswa}/>
+                                    : 'Silahkan Unggah Tanda Pengenal Siswa'}
                                 </div>
-                                <Input size="sm" type="file"/>
+                                <Input className="small" type="file"
+                                onChange={this.onTandaPengenalSiswaUpload}
+                                />
                             </FormGroup>
                         </Col>
                     </Row>
                     <Row className="p-3 bg-white shadow rounded">
                         <Col md="6">
-                            <Button color="light" className="shadow" size="sm" block tag={Link} to="/dashboard/ceo/edit-member/2">Sebelumnya</Button>
+                            <Button color="light" className="shadow" size="sm" block tag={Link} to="/dashboard/ceo/edit-member/1">Sebelumnya</Button>
                         </Col>
                         <Col md="6">
-                            <Button color="primary" className="shadow" size="sm" block>Simpan</Button>
+                            <Button color="primary" className="shadow" size="sm" block
+                            disabled={!nama || !foto || !tandaPengenalSiswa}
+                            >
+                            {isLoading
+                            && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                            {!isLoading
+                            && 'Selesai'}
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
