@@ -15,8 +15,10 @@ import {
     withRouter
 } from 'react-router-dom';
 import {Animated} from 'react-animated-css';
+import ReactLoading from 'react-loading';
 
 import {Navigator} from './../ceo-dashboard-page/ceoDashboardPage';
+import {database} from './../../firebase/firebase';
 
 class CeoEditMember extends Component {
     componentDidMount() {
@@ -32,7 +34,7 @@ class CeoEditMember extends Component {
     }
 
     render() {
-        let {match} = this.props;
+        let {match, history} = this.props;
 
         return <div>
             <Navigator/>
@@ -94,15 +96,15 @@ class CeoEditMember extends Component {
                 >
                     {
                         Number(match.params.step) === 1
-                        && <IdentitasKetuaForm/>
+                        && <IdentitasKetuaForm history={history}/>
                     }
                     {
                         Number(match.params.step) === 2
-                        && <IdentitasAnggota1Form/>
+                        && <IdentitasAnggota1Form history={history}/>
                     }
                     {
                         Number(match.params.step) === 3
-                        && <IdentitasAnggota2Form/>
+                        && <IdentitasAnggota2Form history={history}/>
                     }
                 </Animated>
             </Container>
@@ -110,22 +112,95 @@ class CeoEditMember extends Component {
     }
 }
 
+const byKeyProp = (propertyName, value) => () => ({
+    [propertyName]: value
+});
+
 class IdentitasKetuaForm extends Component {
     constructor(props) {
         super(props);
 
+        this.onFotoUpload = this.onFotoUpload.bind(this);
+        this.onTandaPengenalSiswaUpload = this.onTandaPengenalSiswaUpload.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+
+        this.state = {
+            error: null,
+            nama: '',
+            foto: null,
+            tandaPengenalSiswa: null,
+            isLoading: false
+        }
     }
     
     componentDidMount() {
         window.scrollTo(0,0);
     }
 
+    onFotoUpload(event) {
+        this.setState(byKeyProp('isLoading', true));
+
+        if (event.target.files && event.target.files[0]) {
+            let read = new FileReader();
+
+            read.onload = (e) => {
+                this.setState(byKeyProp('foto', e.target.result));
+                this.setState(byKeyProp('isLoading', false));
+            }
+
+            read.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    onTandaPengenalSiswaUpload(event) {
+        this.setState(byKeyProp('isLoading', true));
+
+        if (event.target.files && event.target.files[0]) {
+            let read = new FileReader();
+
+            read.onload = (e) => {
+                this.setState(byKeyProp('tandaPengenalSiswa', e.target.result));
+                this.setState(byKeyProp('isLoading', false));
+            }
+
+            read.readAsDataURL(event.target.files[0]);
+        }
+    } 
+
     onSubmit(e) {
+        let uid = localStorage.getItem('uid');
+        let {nama, foto, tandaPengenalSiswa} = this.state;
+        let {history} = this.props;
+        let postData = {};
+        let updates = {};
+
+        this.setState(byKeyProp('isLoading', true));
+
+        database.ref('/pesertaCeo/' + uid).once('value')
+        .then((snap) => {
+            postData = snap.val();
+            postData.ketua = {
+                nama,
+                foto,
+                tandaPengenalSiswa
+            };
+
+            updates['/pesertaCeo/' + uid] = postData;
+            database.ref().update(updates);
+
+            this.setState({
+                isLoading: false
+            });
+
+            history.push('/dashboard/ceo/edit-member/2');
+        })
+
         e.preventDefault();
     }
 
     render() {
+        let {nama, foto, tandaPengenalSiswa, isLoading} = this.state;
+
         return <Row className="mt-4 mb-4">
             <Col
                 md={{size:6,offset:3}}
@@ -133,14 +208,17 @@ class IdentitasKetuaForm extends Component {
                 <Form onSubmit={this.onSubmit}>
                     <Row className="p-3 bg-white shadow rounded mb-1">
                         <Col>
-                            <div className="text-center small">Identitas Anggota 1</div>
+                            <div className="text-center small">Identitas Ketua</div>
                         </Col>
                     </Row>
                     <Row className="p-3 bg-white shadow rounded mb-1">
                         <Col md="12">
                             <FormGroup>
                                 <Label className="small">Nama</Label>
-                                <Input size="sm" placeholder="Masukkan nama"/>
+                                <Input size="sm" placeholder="Masukkan nama"
+                                onChange={e => this.setState(byKeyProp('nama', e.target.value))}
+                                value={nama}
+                                />
                             </FormGroup>
                         </Col>
                         <Col md="12">
@@ -153,9 +231,11 @@ class IdentitasKetuaForm extends Component {
                                 <div
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
-                                    Silahkan Unggah Foto
+                                    {foto
+                                    ? <img className="img-fluid" src={foto}/>
+                                    : 'Silahkan Unggah Foto'}
                                 </div>
-                                <Input size="sm" type="file"/>
+                                <Input className="small" onChange={this.onFotoUpload} type="file"/>
                             </FormGroup>
                         </Col>
                         <Col md="12">
@@ -168,15 +248,26 @@ class IdentitasKetuaForm extends Component {
                                 <div
                                     className="small p-3 bg-secondary rounded text-white text-center mb-1"
                                 >
-                                    Silahkan Unggah Foto
+                                    {tandaPengenalSiswa
+                                    ? <img className="img-fluid" src={tandaPengenalSiswa}/>
+                                    : 'Silahkan Unggah Tanda Pengenal Siswa'}
                                 </div>
-                                <Input size="sm" type="file"/>
+                                <Input className="small" type="file"
+                                onChange={this.onTandaPengenalSiswaUpload}
+                                />
                             </FormGroup>
                         </Col>
                     </Row>
                     <Row className="p-3 bg-white shadow rounded">
                         <Col md={{size:6,offset:6}}>
-                            <Button color="primary" className="shadow" size="sm" block tag={Link} to="/dashboard/ceo/edit-member/2">Selanjutnya</Button>
+                            <Button color="primary" className="shadow" size="sm" block
+                            disabled={!nama || !foto || !tandaPengenalSiswa}
+                            >
+                            {isLoading
+                            && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                            {!isLoading
+                            && 'Selanjutnya'}
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
@@ -254,7 +345,7 @@ class IdentitasAnggota1Form extends Component {
                             <Button color="light" className="shadow" size="sm" block tag={Link} to="/dashboard/ceo/edit-member/1">Sebelumnya</Button>
                         </Col>
                         <Col md="6">
-                            <Button color="primary" className="shadow" size="sm" block tag={Link} to="/dashboard/ceo/edit-member/3">Selanjutnya</Button>
+                            <Button color="primary" className="shadow" size="sm" block>Selanjutnya</Button>
                         </Col>
                     </Row>
                 </Form>

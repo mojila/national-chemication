@@ -16,6 +16,7 @@ import {
 } from 'reactstrap';
 
 import {database} from './../../firebase/firebase';
+import {Consumer} from './../../context/context';
 
 const INITIAL_STATE = {
     namaTim: '',
@@ -117,7 +118,9 @@ class CeoDashboardPage extends Component {
 
 export class Navigator extends Component {
     render() {
-        return <Navbar className="shadow" color="light" light fixed="top">
+        return <Consumer>
+        {({ceoLogin}) => 
+        <Navbar className="shadow" color="light" light fixed="top">
             <Container>
                 <NavbarBrand>CEO Dashboard</NavbarBrand>
                 <Nav className="ml-auto">
@@ -126,11 +129,12 @@ export class Navigator extends Component {
                         <Button color="light" size="sm" tag={Link} to="/dashboard/ceo/edit-member/1" className="shadow rounded mr-4 small">Edit Biodata Anggota</Button>
                     </NavItem>
                     <NavItem>
-                        <Button size="sm" color="danger" className="shadow">Log Out</Button>
+                        <Button size="sm" color="danger" className="shadow" onClick={ceoLogin.onLogout}>Log Out</Button>
                     </NavItem>
                 </Nav>
             </Container>
-        </Navbar>;
+        </Navbar>}
+        </Consumer>;
     }
 }
 

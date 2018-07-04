@@ -37,7 +37,9 @@ const INITIAL_STATE = {
     ceoPayment: {
         sekolah: '',
         namaTim: '',
-        file: ''
+        file: '',
+        isLoading: false,
+        isSuccess: false
     }
 };
 
@@ -59,6 +61,8 @@ class Provider extends Component {
         this.onCeoLogin = this.onCeoLogin.bind(this);
         this.onCeoLoginEmail = this.onCeoLoginEmail.bind(this);
         this.onCeoLoginPassword = this.onCeoLoginPassword.bind(this);
+        // CEO Logout
+        this.onCeoLogout = this.onCeoLogout.bind(this);
         // CEO Register
         this.onCeoRegisterNamaTim = this.onCeoRegisterNamaTim.bind(this);
         this.onCeoRegister = this.onCeoRegister.bind(this);
@@ -76,14 +80,11 @@ class Provider extends Component {
         this.state = {...INITIAL_STATE};
     }
 
-    componentDidMount() {
-        let {ceoPayment} = this.state;
-        
-        database.ref('/buktiPembayaran/file').once('value').then((snap) => {
-            ceoPayment.file = snap.val();
+    // CEO Logout
+    onCeoLogout() {
+        localStorage.removeItem('uid');
 
-            this.setState({...ceoPayment});
-        })
+        this.props.history.push('/daftar');
     }
 
     // CEO Payment
@@ -105,9 +106,23 @@ class Provider extends Component {
     onCeoPayment(e) {
         let {ceoPayment} = this.state;
         let {file} = ceoPayment;
+        let uid = localStorage.getItem('uid');
+        let postData = {};
+        let updates = {};
 
-        database.ref('/buktiPembayaran').set({
-            file
+        ceoPayment.isLoading = true;
+        this.setState({...ceoPayment});
+
+        database.ref('/pesertaCeo/' + uid).once('value')
+        .then((snap) => {
+            postData = snap.val();
+            postData.buktiPembayaran = file;
+
+            updates['/pesertaCeo/' + uid] = postData;
+            database.ref().update(updates);
+
+            ceoPayment.isLoading = false;
+            this.setState({...ceoPayment});
         });
 
         e.preventDefault();
@@ -341,7 +356,9 @@ class Provider extends Component {
                     onPasswordChange:
                         this.onCeoLoginPassword,
                     onLogin:
-                        this.onCeoLogin
+                        this.onCeoLogin,
+                    onLogout:
+                        this.onCeoLogout
                 },
                 ceoRegister: {
                     ...ceoRegister,
