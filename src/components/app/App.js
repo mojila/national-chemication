@@ -13,7 +13,7 @@ import CeoLoginPage from './../ceo-login-page/ceoLoginPage';
 import CeoRegisterPage from './../ceo-register-page/ceoRegisterPage';
 import CeoPaymentPage from './../ceo-payment-page/ceoPaymentPage';
 import EcRegisterPage from './../ec-register-page';
-import HsfcRegisterPage from './../hsfc-register-page/hsfcRegisterPage';
+import HsfcRegisterPage from './../hsfc-register-page';
 import HsfcPaymentPage from './../hsfc-payment-page/hsfcPaymentPage';
 import AdminLoginPage from './../admin-login-page/adminLoginPage';
 import CeoDashboardPage from './../ceo-dashboard-page/ceoDashboardPage';

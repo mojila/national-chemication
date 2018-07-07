@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap-reboot.min.css';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css/animate.min.css';
+import './index.css';
 
 import App from './components/app/App';
 import registerServiceWorker from './registerServiceWorker';

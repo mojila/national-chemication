@@ -1122,4 +1122,4 @@ class Finish extends Component {
   }
 }
 
-export default EcRegisterPage;
+export default withRouter(EcRegisterPage);
