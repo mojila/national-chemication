@@ -154,11 +154,11 @@ class InfoDasarForm extends Component {
 
   componentDidMount() {
     this.setState({
-      judulKarya: sessionGet('ec-register-infoDasar-judulKarya') || null,
-      namaInstitusiPendidikan: sessionGet('ec-register-infoDasar-namaInstitusiPendidikan') || null,
-      telpOrFaxInstitusiPendidikan: sessionGet('ec-register-infoDasar-telpOrFaxInstitusiPendidikan') || null,
-      emailInstitusiPendidikan: sessionGet('ec-register-infoDasar-emailInstitusiPendidikan') || null,
-      alamatInstitusiPendidikan: sessionGet('ec-register-infoDasar-alamatInstitusiPendidikan') || null
+      judulKarya: sessionGet('ec-register-infoDasar-judulKarya') || "",
+      namaInstitusiPendidikan: sessionGet('ec-register-infoDasar-namaInstitusiPendidikan') || "",
+      telpOrFaxInstitusiPendidikan: sessionGet('ec-register-infoDasar-telpOrFaxInstitusiPendidikan') || "",
+      emailInstitusiPendidikan: sessionGet('ec-register-infoDasar-emailInstitusiPendidikan') || "",
+      alamatInstitusiPendidikan: sessionGet('ec-register-infoDasar-alamatInstitusiPendidikan') || ""
     });
   }
 
@@ -293,11 +293,11 @@ class DosenPembimbingForm extends Component {
 
   componentDidMount() {
     this.setState({
-      nama: sessionGet('ec-register-dosenPembimbing-nama') || null,
-      nip: sessionGet('ec-register-dosenPembimbing-nip') || null,
-      kontak: sessionGet('ec-register-dosenPembimbing-kontak') || null,
-      email: sessionGet('ec-register-dosenPembimbing-email') || null,
-      foto: sessionGet('ec-register-dosenPembimbing-foto') || null
+      nama: sessionGet('ec-register-dosenPembimbing-nama') || "",
+      nip: sessionGet('ec-register-dosenPembimbing-nip') || "",
+      kontak: sessionGet('ec-register-dosenPembimbing-kontak') || "",
+      email: sessionGet('ec-register-dosenPembimbing-email') || "",
+      foto: sessionGet('ec-register-dosenPembimbing-foto') || ""
     });
   }
 
@@ -387,7 +387,7 @@ class DosenPembimbingForm extends Component {
               </div>}
               {foto
               && <div>
-                <img src={foto} className="img-fluid"/>
+                <img alt="Gambar Gagal Dimuat" src={foto} className="img-fluid"/>
               </div>}
               <Input type="file" className="small"
                 onChange={(e) => {
@@ -434,14 +434,14 @@ class KetuaForm extends Component {
 
   componentDidMount() {
     this.setState({
-      nama: sessionGet('ec-register-ketua-nama') || null,
-      nim: sessionGet('ec-register-ketua-nim') || null,
-      jurusan: sessionGet('ec-register-ketua-jurusan') || null,
-      semester: sessionGet('ec-register-ketua-semester') || null,
-      kontak: sessionGet('ec-register-ketua-kontak') || null,
-      email: sessionGet('ec-register-ketua-email') || null,
-      foto: sessionGet('ec-register-ketua-foto') || null,
-      ktm: sessionGet('ec-register-ketua-ktm') || null
+      nama: sessionGet('ec-register-ketua-nama') || "",
+      nim: sessionGet('ec-register-ketua-nim') || "",
+      jurusan: sessionGet('ec-register-ketua-jurusan') || "",
+      semester: sessionGet('ec-register-ketua-semester') || "",
+      kontak: sessionGet('ec-register-ketua-kontak') || "",
+      email: sessionGet('ec-register-ketua-email') || "",
+      foto: sessionGet('ec-register-ketua-foto') || "",
+      ktm: sessionGet('ec-register-ketua-ktm') || ""
     });
   }
 
@@ -558,7 +558,7 @@ class KetuaForm extends Component {
               </div>}
               {foto
               && <div>
-                <img src={foto} className="img-fluid"/>
+                <img alt="Gambar Gagal Dimuat" src={foto} className="img-fluid"/>
               </div>}
               <Input type="file" className="small"
                 onChange={(e) => {
@@ -584,7 +584,7 @@ class KetuaForm extends Component {
               </div>}
               {ktm
               && <div>
-                <img src={ktm} className="img-fluid"/>
+                <img alt="Gambar Gagal Dimuat" src={ktm} className="img-fluid"/>
               </div>}
               <Input type="file" className="small"
                 onChange={(e) => {
@@ -631,14 +631,14 @@ class Anggota1Form extends Component {
 
   componentDidMount() {
     this.setState({
-      nama: sessionGet('ec-register-anggota1-nama') || null,
-      nim: sessionGet('ec-register-anggota1-nim') || null,
-      jurusan: sessionGet('ec-register-anggota1-jurusan') || null,
-      semester: sessionGet('ec-register-anggota1-semester') || null,
-      kontak: sessionGet('ec-register-anggota1-kontak') || null,
-      email: sessionGet('ec-register-anggota1-email') || null,
-      foto: sessionGet('ec-register-anggota1-foto') || null,
-      ktm: sessionGet('ec-register-anggota1-ktm') || null
+      nama: sessionGet('ec-register-anggota1-nama') || "",
+      nim: sessionGet('ec-register-anggota1-nim') || "",
+      jurusan: sessionGet('ec-register-anggota1-jurusan') || "",
+      semester: sessionGet('ec-register-anggota1-semester') || "",
+      kontak: sessionGet('ec-register-anggota1-kontak') || "",
+      email: sessionGet('ec-register-anggota1-email') || "",
+      foto: sessionGet('ec-register-anggota1-foto') || "",
+      ktm: sessionGet('ec-register-anggota1-ktm') || ""
     });
   }
 
@@ -755,7 +755,7 @@ class Anggota1Form extends Component {
               </div>}
               {foto
               && <div>
-                <img src={foto} className="img-fluid"/>
+                <img alt="Gambar Gagal Dimuat" src={foto} className="img-fluid"/>
               </div>}
               <Input type="file" className="small"
                 onChange={(e) => {
@@ -781,7 +781,7 @@ class Anggota1Form extends Component {
               </div>}
               {ktm
               && <div>
-                <img src={ktm} className="img-fluid"/>
+                <img alt="Gambar Gagal Dimuat" src={ktm} className="img-fluid"/>
               </div>}
               <Input type="file" className="small"
                 onChange={(e) => {
@@ -828,14 +828,14 @@ class Anggota2Form extends Component {
 
   componentDidMount() {
     this.setState({
-      nama: sessionGet('ec-register-anggota2-nama') || null,
-      nim: sessionGet('ec-register-anggota2-nim') || null,
-      jurusan: sessionGet('ec-register-anggota2-jurusan') || null,
-      semester: sessionGet('ec-register-anggota2-semester') || null,
-      kontak: sessionGet('ec-register-anggota2-kontak') || null,
-      email: sessionGet('ec-register-anggota2-email') || null,
-      foto: sessionGet('ec-register-anggota2-foto') || null,
-      ktm: sessionGet('ec-register-anggota2-ktm') || null
+      nama: sessionGet('ec-register-anggota2-nama') || "",
+      nim: sessionGet('ec-register-anggota2-nim') || "",
+      jurusan: sessionGet('ec-register-anggota2-jurusan') || "",
+      semester: sessionGet('ec-register-anggota2-semester') || "",
+      kontak: sessionGet('ec-register-anggota2-kontak') || "",
+      email: sessionGet('ec-register-anggota2-email') || "",
+      foto: sessionGet('ec-register-anggota2-foto') || "",
+      ktm: sessionGet('ec-register-anggota2-ktm') || ""
     });
   }
 
@@ -952,7 +952,7 @@ class Anggota2Form extends Component {
               </div>}
               {foto
               && <div>
-                <img src={foto} className="img-fluid"/>
+                <img alt="Gambar Gagal Dimuat" src={foto} className="img-fluid"/>
               </div>}
               <Input type="file" className="small"
                 onChange={(e) => {
@@ -978,7 +978,7 @@ class Anggota2Form extends Component {
               </div>}
               {ktm
               && <div>
-                <img src={ktm} className="img-fluid"/>
+                <img alt="Gambar Gagal Dimuat" src={ktm} className="img-fluid"/>
               </div>}
               <Input type="file" className="small"
                 onChange={(e) => {
@@ -1027,59 +1027,60 @@ class Finish extends Component {
 
     database.ref('pesertaEc/' + key).set({
       infoDasar: {
-        judulKarya: sessionGet('ec-register-infoDasar-judulKarya') || null,
-        namaInstitusiPendidikan: sessionGet('ec-register-infoDasar-namaInstitusiPendidikan') || null,
-        telpOrFaxInstitusiPendidikan: sessionGet('ec-register-infoDasar-telpOrFaxInstitusiPendidikan') || null,
-        emailInstitusiPendidikan: sessionGet('ec-register-infoDasar-emailInstitusiPendidikan') || null,
-        alamatInstitusiPendidikan: sessionGet('ec-register-infoDasar-alamatInstitusiPendidikan') || null
+        judulKarya: sessionGet('ec-register-infoDasar-judulKarya') || "",
+        namaInstitusiPendidikan: sessionGet('ec-register-infoDasar-namaInstitusiPendidikan') || "",
+        telpOrFaxInstitusiPendidikan: sessionGet('ec-register-infoDasar-telpOrFaxInstitusiPendidikan') || "",
+        emailInstitusiPendidikan: sessionGet('ec-register-infoDasar-emailInstitusiPendidikan') || "",
+        alamatInstitusiPendidikan: sessionGet('ec-register-infoDasar-alamatInstitusiPendidikan') || ""
       },
       dosenPembimbing: {
-        nama: sessionGet('ec-register-dosenPembimbing-nama') || null,
-        nip: sessionGet('ec-register-dosenPembimbing-nip') || null,
-        email: sessionGet('ec-register-dosenPembimbing-email') || null,
-        kontak: sessionGet('ec-register-dosenPembimbing-kontak') || null,
-        foto: sessionGet('ec-register-dosenPembimbing-foto') || null
+        nama: sessionGet('ec-register-dosenPembimbing-nama') || "",
+        nip: sessionGet('ec-register-dosenPembimbing-nip') || "",
+        email: sessionGet('ec-register-dosenPembimbing-email') || "",
+        kontak: sessionGet('ec-register-dosenPembimbing-kontak') || "",
+        foto: sessionGet('ec-register-dosenPembimbing-foto') || ""
       },
       ketua: {
-        nama: sessionGet('ec-register-ketua-nama') || null,
-        nim: sessionGet('ec-register-ketua-nama') || null,
-        email: sessionGet('ec-register-ketua-email') || null,
-        kontak: sessionGet('ec-register-ketua-kontak') || null,
-        jurusan: sessionGet('ec-register-ketua-jurusan') || null,
-        semester: sessionGet('ec-register-ketua-semester') || null,
-        foto: sessionGet('ec-register-ketua-foto') || null,
-        ktm: sessionGet('ec-register-ketua-ktm') || null
+        nama: sessionGet('ec-register-ketua-nama') || "",
+        nim: sessionGet('ec-register-ketua-nama') || "",
+        email: sessionGet('ec-register-ketua-email') || "",
+        kontak: sessionGet('ec-register-ketua-kontak') || "",
+        jurusan: sessionGet('ec-register-ketua-jurusan') || "",
+        semester: sessionGet('ec-register-ketua-semester') || "",
+        foto: sessionGet('ec-register-ketua-foto') || "",
+        ktm: sessionGet('ec-register-ketua-ktm') || ""
       },
       anggota1: {
-        nama: sessionGet('ec-register-anggota1-nama') || null,
-        nim: sessionGet('ec-register-anggota1-nama') || null,
-        email: sessionGet('ec-register-anggota1-email') || null,
-        kontak: sessionGet('ec-register-anggota1-kontak') || null,
-        jurusan: sessionGet('ec-register-anggota1-jurusan') || null,
-        semester: sessionGet('ec-register-anggota1-semester') || null,
-        foto: sessionGet('ec-register-anggota1-foto') || null,
-        ktm: sessionGet('ec-register-anggota1-ktm') || null
+        nama: sessionGet('ec-register-anggota1-nama') || "",
+        nim: sessionGet('ec-register-anggota1-nama') || "",
+        email: sessionGet('ec-register-anggota1-email') || "",
+        kontak: sessionGet('ec-register-anggota1-kontak') || "",
+        jurusan: sessionGet('ec-register-anggota1-jurusan') || "",
+        semester: sessionGet('ec-register-anggota1-semester') || "",
+        foto: sessionGet('ec-register-anggota1-foto') || "",
+        ktm: sessionGet('ec-register-anggota1-ktm') || ""
       },
       anggota2: {
-        nama: sessionGet('ec-register-anggota2-nama') || null,
-        nim: sessionGet('ec-register-anggota2-nama') || null,
-        email: sessionGet('ec-register-anggota2-email') || null,
-        kontak: sessionGet('ec-register-anggota2-kontak') || null,
-        jurusan: sessionGet('ec-register-anggota2-jurusan') || null,
-        semester: sessionGet('ec-register-anggota2-semester') || null,
-        foto: sessionGet('ec-register-anggota2-foto') || null,
-        ktm: sessionGet('ec-register-anggota2-ktm') || null
+        nama: sessionGet('ec-register-anggota2-nama') || "",
+        nim: sessionGet('ec-register-anggota2-nama') || "",
+        email: sessionGet('ec-register-anggota2-email') || "",
+        kontak: sessionGet('ec-register-anggota2-kontak') || "",
+        jurusan: sessionGet('ec-register-anggota2-jurusan') || "",
+        semester: sessionGet('ec-register-anggota2-semester') || "",
+        foto: sessionGet('ec-register-anggota2-foto') || "",
+        ktm: sessionGet('ec-register-anggota2-ktm') || ""
       }
+    })
+    .then(() => {
+      this.setState({
+        isLoading: false
+      });
+
+      sessionStorage.clear();
+
+      swal("Selamat, Pendaftaran Telah Berhasil!")
+      .then(() => history.push('/'));
     });
-
-    this.setState({
-      isLoading: false
-    });
-
-    sessionStorage.clear();
-
-    swal("Selamat, Pendaftaran Telah Berhasil!")
-    .then(() => history.push('/daftar'));
 
     e.preventDefault();
   }
