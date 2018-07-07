@@ -22,6 +22,9 @@ const INITIAL_STATE = {
     namaTim: '',
     sekolah: '',
     lunas: '',
+    ketua: null,
+    anggota1: null,
+    anggota2: null,
     error: null
 };
 
@@ -42,13 +45,15 @@ class CeoDashboardPage extends Component {
             database.ref('/pesertaCeo/' + uid).once('value')
             .then((snap) => {
                 if(snap.val()) {
-                    let {namaTim, sekolah, lunas, anggota} = snap.val();
+                    let {namaTim, sekolah, lunas, ketua, anggota1, anggota2} = snap.val();
 
                     this.setState({
                         namaTim,
                         sekolah,
                         lunas,
-                        anggota
+                        ketua,
+                        anggota1,
+                        anggota2
                     });
                 } else {
                     // this.props.history.push('/daftar');                    
@@ -63,12 +68,21 @@ class CeoDashboardPage extends Component {
     }
 
     render() {
-        let {namaTim, sekolah, lunas, anggota} = this.state;
+        let {
+            namaTim, 
+            sekolah, 
+            lunas, 
+            ketua,
+            anggota1,
+            anggota2
+        } = this.state;
+
+        let isPendaftaranLengkap = ketua && anggota1 && anggota2; 
 
         return <div>
             <Navigator/>
             <Container style={{marginTop:'5rem'}}>
-                {!anggota
+                {(!ketua || !anggota1 || !anggota2)
                 && <Row
                     className="p-3 bg-warning shadow rounded mb-1"
                 >
@@ -108,7 +122,7 @@ class CeoDashboardPage extends Component {
                     </Col>
                     <Col>
                         <div className="small">Status Pembayaran: {lunas ? 'Lunas':'Belum Lunas'}</div>
-                        <div className="small">Status Pendaftaran: {anggota && lunas ? 'Lengkap':'Belum Lengkap'}</div>
+                        <div className="small">Status Pendaftaran: {isPendaftaranLengkap ? 'Lengkap':'Belum Lengkap'}</div>
                     </Col>
                 </Row>
             </Container>

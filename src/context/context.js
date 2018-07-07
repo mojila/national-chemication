@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import {auth,database,storage} from './../firebase/firebase';
+import {auth,database} from './../firebase/firebase';
 
 const MyContext = React.createContext();
 
@@ -47,7 +47,7 @@ class Provider extends Component {
     constructor(props) {
         super(props);
 
-        this.onEcRegisterJudulKaryaChange = 
+        this.onEcRegisterJudulKaryaChange =
             this.onEcRegisterJudulKaryaChange.bind(this);
         this.onEcRegisterNamaInstitusiPendidikan =
             this.onEcRegisterNamaInstitusiPendidikan.bind(this);
@@ -181,8 +181,8 @@ class Provider extends Component {
         let {ceoRegister} = this.state;
         let {
             email,
-            passwordOne, 
-            namaTim, 
+            passwordOne,
+            namaTim,
             sekolah,
             contact,
             lunas,
@@ -218,7 +218,7 @@ class Provider extends Component {
         e.preventDefault();
     }
 
-    // CEO Login 
+    // CEO Login
     onCeoLoginEmail(e) {
         let {ceoLogin} = this.state;
         let {value} = e.target;
@@ -238,7 +238,7 @@ class Provider extends Component {
     onCeoLogin(e) {
         let {ceoLogin} = this.state;
         let {email,password} = ceoLogin;
-        
+
         ceoLogin.isLoading = true;
         this.setState({...ceoLogin});
 
@@ -338,11 +338,11 @@ class Provider extends Component {
             value={{
                 ecRegister: {
                     ...ecRegister,
-                    onJudulKaryaChange: 
+                    onJudulKaryaChange:
                         this.onEcRegisterJudulKaryaChange,
-                    onNamaInstitusiPendidikan: 
+                    onNamaInstitusiPendidikan:
                         this.onEcRegisterNamaInstitusiPendidikan,
-                    onAlamatInstitusiPendidikan: 
+                    onAlamatInstitusiPendidikan:
                         this.onEcRegisterAlamatInstitusiPendidikan,
                     onTelpOrFaxInstitusiPendidikan:
                         this.onEcRegisterTelpOrFaxInstitusiPendidikan,

@@ -40,14 +40,14 @@ class HsfcRegisterPage extends Component {
             >
                 <Row>
                     <Col>
-                        <div 
+                        <div
                             className="small text-capitalize text-center text-white"
                         >
                             Info dasar
                         </div>
                     </Col>
                     <Col>
-                        <div 
+                        <div
                             className="small text-capitalize text-center text-white"
                         >
                             Official
@@ -66,36 +66,36 @@ class HsfcRegisterPage extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Progress 
+                        <Progress
                             value={Number(match.params.step) > 0  ? 5:0}
-                            min="0" 
+                            min="0"
                             max="5"
                             className="shadow"
                             color="primary"
                         />
                     </Col>
                     <Col>
-                        <Progress 
+                        <Progress
                             value={Number(match.params.step) > 1  ? 5:0}
-                            min="0" 
+                            min="0"
                             max="5"
                             className="shadow"
                             color="primary"
                         />
                     </Col>
                     <Col>
-                        <Progress 
-                            value={Number(match.params.step) > 2  ? 5:0}                            
-                            min="0" 
+                        <Progress
+                            value={Number(match.params.step) > 2  ? 5:0}
+                            min="0"
                             max="5"
                             className="shadow"
                             color="primary"
                         />
                     </Col>
                     <Col>
-                        <Progress 
-                            value={Number(match.params.step) > 3  ? 5:0}                            
-                            min="0" 
+                        <Progress
+                            value={Number(match.params.step) > 3  ? 5:0}
+                            min="0"
                             max="5"
                             className="shadow"
                             color="primary"
@@ -137,11 +137,11 @@ class InfoDasarForm extends Component {
     onSubmit(e) {
         e.preventDefault();
     }
-    
+
     render() {
         let {error} = this.state;
 
-        return <Row className="mt-4">        
+        return <Row className="mt-4">
             <Col
                 md={{
                     size:4,
@@ -156,9 +156,9 @@ class InfoDasarForm extends Component {
                         className="mb-1 p-3 bg-white shadow rounded"
                     >
                         <Col>
-                            <Button 
-                                size="sm" 
-                                color="light" 
+                            <Button
+                                size="sm"
+                                color="light"
                                 className="shadow"
                                 tag={Link}
                                 to="/daftar"
@@ -167,7 +167,7 @@ class InfoDasarForm extends Component {
                             </Button>
                         </Col>
                         <Col>
-                            <div 
+                            <div
                                 className="small text-right text-capitalize"
                             >
                                 Step 1: Info Dasar
@@ -196,7 +196,7 @@ class InfoDasarForm extends Component {
                             </FormGroup>
                         </Col>
                     </Row>
-                    <Row 
+                    <Row
                         className="p-3 mb-4 bg-white shadow rounded"
                     >
                         <Col
@@ -269,7 +269,7 @@ class OfficialForm extends Component {
                     <Col
                         md={{size:6,offset:6}}
                     >
-                        <div 
+                        <div
                             className="small text-right text-capitalize"
                         >
                             Step 2: Official
@@ -390,7 +390,7 @@ class OfficialForm extends Component {
             <Col
                 md={{size:12}}
             >
-                <Row 
+                <Row
                     className="p-3 mb-4 bg-white shadow rounded"
                 >
                     <Col
@@ -477,7 +477,7 @@ class Pemain1sd5Form extends Component {
                     <Col
                         md={{size:6,offset:6}}
                     >
-                        <div 
+                        <div
                             className="small text-right text-capitalize"
                         >
                             Step 3: Pemain 1 s/d 5
@@ -1088,7 +1088,7 @@ class Pemain1sd5Form extends Component {
             <Col
                 md={{size:12}}
             >
-                <Row 
+                <Row
                     className="p-3 mb-4 bg-white shadow rounded"
                 >
                     <Col
@@ -1175,7 +1175,7 @@ class Pemain6sd10Form extends Component {
                     <Col
                         md={{size:6,offset:6}}
                     >
-                        <div 
+                        <div
                             className="small text-right text-capitalize"
                         >
                             Step 4: Pemain 6 s/d 10
@@ -1786,7 +1786,7 @@ class Pemain6sd10Form extends Component {
             <Col
                 md={{size:12}}
             >
-                <Row 
+                <Row
                     className="p-3 mb-4 bg-white shadow rounded"
                 >
                     <Col
