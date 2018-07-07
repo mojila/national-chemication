@@ -11,12 +11,13 @@ import {
     Button
 } from 'reactstrap';
 import {
-    Link,
     withRouter
 } from 'react-router-dom';
 import {Animated} from 'react-animated-css';
-import {Document, Page} from 'react-pdf';
+import ReactLoading from 'react-loading';
+import swal from 'sweetalert';
 
+import {database} from './../../firebase/firebase';
 import bg from './../../statics/images/hsfc.jpeg';
 
 class HsfcRegisterPage extends Component {
@@ -31,7 +32,8 @@ class HsfcRegisterPage extends Component {
 
     return (
       <Container className="mt-md-4 mb-4">
-        <Animated isVisible animationIn="fadeIn">
+        {match.params.step !== "finish"
+        && <Animated isVisible animationIn="fadeIn">
           <Row>
               <Col>
                   <div
@@ -96,7 +98,7 @@ class HsfcRegisterPage extends Component {
                   />
               </Col>
           </Row>
-        </Animated>
+        </Animated>}
         <Animated animationIn="flipInY" animationOut="flipOutY" isVisible>
           <Row className="mt-4">
             {Number(match.params.step) === 1
@@ -115,6 +117,10 @@ class HsfcRegisterPage extends Component {
             && <Col md={{size: 8, offset: 2}}>
               <Pemain6Sd10Form history={history}/>
             </Col>}
+            {match.params.step === "finish"
+            && <Col md={{size: 6, offset: 3}}>
+              <Finish history={history}/>
+            </Col>}
           </Row>
         </Animated>
       </Container>
@@ -132,9 +138,9 @@ class InfoDasarForm extends Component {
 
   componentDidMount() {
     this.setState({
-      namaSekolah: sessionStorage.getItem('hsfc-register-infoDasar-namaSekolah') || null,
-      kota: sessionStorage.getItem('hsfc-register-infoDasar-kota') || null,
-      kontak: sessionStorage.getItem('hsfc-register-infoDasar-kontak') || null
+      namaSekolah: sessionStorage.getItem('hsfc-register-infoDasar-namaSekolah') || "",
+      kota: sessionStorage.getItem('hsfc-register-infoDasar-kota') || "",
+      kontak: sessionStorage.getItem('hsfc-register-infoDasar-kontak') || ""
     });
   }
 
@@ -233,14 +239,14 @@ class OfficialForm extends Component {
   componentDidMount() {
     this.setState({
       official1: {
-        nama: sessionStorage.getItem('hsfc-register-official1-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-official1-kontak') || null,
-        foto: sessionStorage.getItem('hsfc-register-official1-foto') || null
+        nama: sessionStorage.getItem('hsfc-register-official1-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-official1-kontak') || "",
+        foto: sessionStorage.getItem('hsfc-register-official1-foto') || ""
       },
       official2: {
-        nama: sessionStorage.getItem('hsfc-register-official2-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-official2-kontak') || null,
-        foto: sessionStorage.getItem('hsfc-register-official2-foto') || null
+        nama: sessionStorage.getItem('hsfc-register-official2-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-official2-kontak') || "",
+        foto: sessionStorage.getItem('hsfc-register-official2-foto') || ""
       }
     });
   }
@@ -333,7 +339,7 @@ class OfficialForm extends Component {
                 </div>}
                 {official1.foto
                 && <div className="mb-1">
-                  <img src={official1.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={official1.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -389,7 +395,7 @@ class OfficialForm extends Component {
                 </div>}
                 {official2.foto
                 && <div className="mb-1">
-                  <img src={official2.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={official2.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -507,64 +513,64 @@ class Pemain1Sd5Form extends Component {
   componentDidMount() {
     this.setState({
       pemain1: {
-        nama: sessionStorage.getItem('hsfc-register-pemain1-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain1-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain1-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain1-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain1-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain1-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain1-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain1-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain1-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain1-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain1-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain1-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain1-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain1-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain1-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain1-rapor') || ""
       },
       pemain2: {
-        nama: sessionStorage.getItem('hsfc-register-pemain2-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain2-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain2-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain2-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain2-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain2-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain2-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain2-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain2-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain2-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain2-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain2-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain2-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain2-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain2-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain2-rapor') || ""
       },
       pemain3: {
-        nama: sessionStorage.getItem('hsfc-register-pemain3-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain3-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain3-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain3-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain3-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain3-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain3-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain3-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain3-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain3-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain3-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain3-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain3-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain3-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain3-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain3-rapor') || ""
       },
       pemain4: {
-        nama: sessionStorage.getItem('hsfc-register-pemain4-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain4-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain4-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain4-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain4-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain4-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain4-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain4-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain4-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain4-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain4-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain4-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain4-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain4-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain4-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain4-rapor') || ""
       },
       pemain5: {
-        nama: sessionStorage.getItem('hsfc-register-pemain5-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain5-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain5-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain5-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain5-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain5-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain5-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain5-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain5-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain5-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain5-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain5-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain5-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain5-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain5-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain5-rapor') || ""
       },
     });
   }
@@ -813,7 +819,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain1.foto
                 && <div className="mb-1">
-                  <img src={pemain1.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain1.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -843,7 +849,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain1.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain1.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain1.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -963,7 +969,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain2.foto
                 && <div className="mb-1">
-                  <img src={pemain2.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain2.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -993,7 +999,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain2.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain2.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain2.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1113,7 +1119,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain3.foto
                 && <div className="mb-1">
-                  <img src={pemain3.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain3.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1143,7 +1149,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain3.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain3.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain3.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1263,7 +1269,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain4.foto
                 && <div className="mb-1">
-                  <img src={pemain4.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain4.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1293,7 +1299,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain4.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain4.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain4.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1413,7 +1419,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain5.foto
                 && <div className="mb-1">
-                  <img src={pemain5.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain5.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1443,7 +1449,7 @@ class Pemain1Sd5Form extends Component {
                 </div>}
                 {pemain5.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain5.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain5.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1619,64 +1625,64 @@ class Pemain6Sd10Form extends Component {
   componentDidMount() {
     this.setState({
       pemain6: {
-        nama: sessionStorage.getItem('hsfc-register-pemain6-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain6-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain6-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain6-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain6-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain6-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain6-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain6-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain6-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain6-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain6-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain6-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain6-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain6-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain6-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain6-rapor') || ""
       },
       pemain7: {
-        nama: sessionStorage.getItem('hsfc-register-pemain7-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain7-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain7-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain7-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain7-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain7-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain7-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain7-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain7-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain7-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain7-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain7-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain7-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain7-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain7-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain7-rapor') || ""
       },
       pemain8: {
-        nama: sessionStorage.getItem('hsfc-register-pemain8-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain8-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain8-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain8-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain8-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain8-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain8-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain8-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain8-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain8-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain8-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain8-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain8-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain8-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain8-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain8-rapor') || ""
       },
       pemain9: {
-        nama: sessionStorage.getItem('hsfc-register-pemain9-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain9-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain9-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain9-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain9-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain9-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain9-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain9-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain9-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain9-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain9-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain9-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain9-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain9-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain9-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain9-rapor') || ""
       },
       pemain10: {
-        nama: sessionStorage.getItem('hsfc-register-pemain10-nama') || null,
-        kontak: sessionStorage.getItem('hsfc-register-pemain10-kontak') || null,
+        nama: sessionStorage.getItem('hsfc-register-pemain10-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain10-kontak') || "",
         kelahiran: {
-          tempat: sessionStorage.getItem('hsfc-register-pemain10-tempatLahir') || null,
-          tanggal: sessionStorage.getItem('hsfc-register-pemain10-tanggalLahir') || null
+          tempat: sessionStorage.getItem('hsfc-register-pemain10-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain10-tanggalLahir') || ""
         },
-        foto: sessionStorage.getItem('hsfc-register-pemain10-foto') || null,
-        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain10-nomorPunggung') || null,
-        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain10-kartuPelajar') || null,
-        rapor: localStorage.getItem('hsfc-register-pemain10-rapor') || null
+        foto: sessionStorage.getItem('hsfc-register-pemain10-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain10-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain10-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain10-rapor') || ""
       },
     });
   }
@@ -1925,7 +1931,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain6.foto
                 && <div className="mb-1">
-                  <img src={pemain6.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain6.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -1953,7 +1959,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain6.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain6.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain6.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2071,7 +2077,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain7.foto
                 && <div className="mb-1">
-                  <img src={pemain7.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain7.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2101,7 +2107,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain7.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain7.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain7.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2221,7 +2227,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain8.foto
                 && <div className="mb-1">
-                  <img src={pemain8.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain8.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2251,7 +2257,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain8.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain8.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain8.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2371,7 +2377,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain9.foto
                 && <div className="mb-1">
-                  <img src={pemain9.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain9.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2401,7 +2407,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain9.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain9.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain9.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2521,7 +2527,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain10.foto
                 && <div className="mb-1">
-                  <img src={pemain10.foto} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain10.foto} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2551,7 +2557,7 @@ class Pemain6Sd10Form extends Component {
                 </div>}
                 {pemain10.kartuPelajar
                 && <div className="mb-1">
-                  <img src={pemain10.kartuPelajar} className="img-fluid"/>
+                  <img alt="Gambar Gagal Dimuat" src={pemain10.kartuPelajar} className="img-fluid"/>
                 </div>}
                 <Input type="file" className="small"
                   onChange={(e) => {
@@ -2648,6 +2654,209 @@ class Pemain6Sd10Form extends Component {
           </Col>
           <Col md="6">
             <Button color="primary" className="shadow" block>Selanjutnya</Button>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+}
+
+class Finish extends Component {
+  state = {
+    isLoading: false
+  };
+
+  onSubmit(e) {
+    let {history} = this.props;
+
+    this.setState({
+      isLoading: true
+    });
+
+    let key = database.ref().child('pesertaHsfc').push().key;
+
+    database.ref('pesertaHsfc/' + key).set({
+      namaSekolah: sessionStorage.getItem('hsfc-register-infoDasar-namaSekolah') || "",
+      kota: sessionStorage.getItem('hsfc-register-infoDasar-kota') || "",
+      kontak: sessionStorage.getItem('hsfc-register-infoDasar-kontak') || "",
+      official1: {
+        nama: sessionStorage.getItem('hsfc-register-official1-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-official1-kontak') || "",
+        foto: sessionStorage.getItem('hsfc-register-official1-foto') || ""
+      },
+      official2: {
+        nama: sessionStorage.getItem('hsfc-register-official2-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-official2-kontak') || "",
+        foto: sessionStorage.getItem('hsfc-register-official2-foto') || ""
+      },
+      pemain1: {
+        nama: sessionStorage.getItem('hsfc-register-pemain1-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain1-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain1-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain1-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain1-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain1-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain1-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain1-rapor') || ""
+      },
+      pemain2: {
+        nama: sessionStorage.getItem('hsfc-register-pemain2-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain2-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain2-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain2-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain2-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain2-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain2-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain2-rapor') || ""
+      },
+      pemain3: {
+        nama: sessionStorage.getItem('hsfc-register-pemain3-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain3-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain3-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain3-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain3-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain3-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain3-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain3-rapor') || ""
+      },
+      pemain4: {
+        nama: sessionStorage.getItem('hsfc-register-pemain4-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain4-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain4-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain4-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain4-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain4-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain4-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain4-rapor') || ""
+      },
+      pemain5: {
+        nama: sessionStorage.getItem('hsfc-register-pemain5-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain5-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain5-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain5-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain5-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain5-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain5-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain5-rapor') || ""
+      },
+      pemain6: {
+        nama: sessionStorage.getItem('hsfc-register-pemain6-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain6-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain6-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain6-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain6-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain6-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain6-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain6-rapor') || ""
+      },
+      pemain7: {
+        nama: sessionStorage.getItem('hsfc-register-pemain7-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain7-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain7-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain7-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain7-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain7-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain7-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain7-rapor') || ""
+      },
+      pemain8: {
+        nama: sessionStorage.getItem('hsfc-register-pemain8-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain8-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain8-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain8-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain8-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain8-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain8-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain8-rapor') || ""
+      },
+      pemain9: {
+        nama: sessionStorage.getItem('hsfc-register-pemain9-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain9-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain9-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain9-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain9-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain9-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain9-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain9-rapor') || ""
+      },
+      pemain10: {
+        nama: sessionStorage.getItem('hsfc-register-pemain10-nama') || "",
+        kontak: sessionStorage.getItem('hsfc-register-pemain10-kontak') || "",
+        kelahiran: {
+          tempat: sessionStorage.getItem('hsfc-register-pemain10-tempatLahir') || "",
+          tanggal: sessionStorage.getItem('hsfc-register-pemain10-tanggalLahir') || ""
+        },
+        foto: sessionStorage.getItem('hsfc-register-pemain10-foto') || "",
+        nomorPunggung: sessionStorage.getItem('hsfc-register-pemain10-nomorPunggung') || "",
+        kartuPelajar: sessionStorage.getItem('hsfc-register-pemain10-kartuPelajar') || "",
+        rapor: localStorage.getItem('hsfc-register-pemain10-rapor') || ""
+      }
+    })
+    .then(() => {
+      this.setState({
+        isLoading: false
+      });
+
+      sessionStorage.clear();
+      localStorage.clear();
+
+      swal("Selamat anda telah terdaftar").then(() => history.push('/'));
+    });
+
+    e.preventDefault();
+  }
+
+  render() {
+    let {history} = this.props;
+    let {isLoading} = this.state;
+
+    return (
+      <Form onSubmit={this.onSubmit.bind(this)}>
+        <Row className="p-3 bg-white rounded shadow mb-1">
+          <Col>
+            <p className="m-0 p-0 text-uppercase text-center">Konfirmasi Pendaftaran</p>
+          </Col>
+        </Row>
+
+        <Row className="p-3 bg-white rounded shadow mb-1">
+          <Col>
+            <p className="m-0 p-0 small text-center">
+              Dengan klik tombol konfirmasi maka anda menyetujui
+              segala ketentuan yang ada, dan pastikan semua data yang dimasukkan telah benar.</p>
+          </Col>
+        </Row>
+
+        <Row className="p-3 bg-white rounded shadow">
+          <Col>
+            <Button className="shadow" color="light" block
+              onClick={() => history.push('/daftar/hsfc/4')}
+            >Kembali</Button>
+          </Col>
+          <Col>
+            <Button className="shadow" color="primary" disabled={isLoading} block>
+              {isLoading
+              && <ReactLoading type="spin" height={24} width={24} color="white" className="mx-auto"/>}
+              {!isLoading
+              && 'Konfirmasi'}
+            </Button>
           </Col>
         </Row>
       </Form>

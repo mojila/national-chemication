@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {
-    withRouter,
-    Link
+    withRouter
 } from 'react-router-dom';
 import {
     Container,
@@ -16,7 +15,6 @@ import {Animated} from 'react-animated-css';
 import ReactLoading from 'react-loading';
 
 import bg from './../../statics/images/ceo.jpg';
-import {Consumer} from './../../context/context';
 import {Navigator} from './../ceo-dashboard-page/ceoDashboardPage';
 import {database} from './../../firebase/firebase';
 
@@ -27,7 +25,7 @@ class CeoPaymentPage extends Component {
         document.title = "Bukti Pembayaran Peserta CEO";
         document.body.style.background = "url('"+bg+"')";
         document.body.style.backgroundSize = "cover";
-        
+
         if (!uid) {
             this.props.history.push('/daftar');
         }
@@ -36,7 +34,7 @@ class CeoPaymentPage extends Component {
     render() {
         return <div>
         <Navigator/>
-        <Container 
+        <Container
             className="mt-md-5 mb-5"
         >
             <Row>
@@ -79,7 +77,7 @@ class PaymentForm extends Component {
 
     componentDidMount() {
         let uid = localStorage.getItem('uid');
-    
+
         this.setState({
             isLoading: true
         });
@@ -201,7 +199,7 @@ class PaymentForm extends Component {
                         offset:0
                     }}
                 >
-                    <div 
+                    <div
                         className="bg-secondary p-3 rounded text-center text-capitalize small text-white">
                         {buktiPembayaran
                             ? <img src={buktiPembayaran} alt="Bukti Transfer" className="img-fluid" />

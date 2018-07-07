@@ -26,31 +26,23 @@ class HsfcPaymentPage extends Component {
     }
 
     render() {
-        return <Container 
-            className="mt-md-5 mb-5"
-        >
-            <Row>
-                <Col
-                    md={{
-                        size:6,
-                        offset:3
-                    }}
-                >
-                    <Animated
-                        animationIn="flipInY"
-                        isVisible
-                    >
-                        <PaymentForm/>
-                    </Animated>
-                </Col>
-            </Row>
-        </Container>;
+        return (
+          <Container className="mt-md-5 mb-5">
+              <Row>
+                  <Col md={{size:6, offset:3}}>
+                      <Animated animationIn="flipInY" isVisible>
+                          <PaymentForm/>
+                      </Animated>
+                  </Col>
+              </Row>
+          </Container>
+        );
     }
 }
 
 const INITIAL_STATE = {
-    error: null,
-    imagePreview: null
+    error: "",
+    imagePreview: ""
 };
 
 const byKeyProp = (propertyName, value) => () => ({
@@ -82,7 +74,7 @@ class PaymentForm extends Component {
             reader.readAsDataURL(event.target.files[0]);
         }
     }
-    
+
     render() {
         let {imagePreview} = this.state;
 
@@ -109,7 +101,7 @@ class PaymentForm extends Component {
                 >
                     <FormGroup>
                         <Label className="small">Nama Sekolah</Label>
-                        <Input 
+                        <Input
                             size="sm"
                             placeholder="Masukkan nama sekolah"
                         />
@@ -129,7 +121,7 @@ class PaymentForm extends Component {
                         offset:0
                     }}
                 >
-                    <div 
+                    <div
                         className="bg-secondary p-3 rounded text-center text-capitalize small text-white">
                         {imagePreview
                             ? <img src={imagePreview} alt="Bukti Transfer" className="img-fluid"/>
