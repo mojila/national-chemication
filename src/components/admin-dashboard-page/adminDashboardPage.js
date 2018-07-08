@@ -18,14 +18,23 @@ import {Animated} from 'react-animated-css';
 
 class AdminDashboardPage extends Component {
     componentDidMount() {
+        let {history} = this.props;
+        let uid = localStorage.getItem('uid');
+
+        if (!uid) {
+          history.push('/login/admin');
+        }
+
         document.title = "Dashboard Panitia";
         document.body.style.background = "#e3e3e3";
     }
-    
+
     render() {
-        return <div>
-            <Navigator/>
-        </div>;
+        return (
+          <div>
+              <Navigator/>
+          </div>
+        );
     }
 }
 
@@ -54,7 +63,7 @@ export class Navigator extends Component {
                 <NavbarBrand>Dashboard Panitia</NavbarBrand>
                 <Nav className="ml-auto">
                     <NavItem>
-                        <Button color="light" size="sm" tag={Link} to="/dashboard/admin" className="shadow rounded mr-4 small">Beranda</Button> 
+                        <Button color="light" size="sm" tag={Link} to="/dashboard/admin" className="shadow rounded mr-4 small">Beranda</Button>
                     </NavItem>
                     <NavItem>
                         <Button color="light" size="sm" className="shadow rounded mr-4 small" onClick={this.onToggle}>Daftar Peserta</Button>

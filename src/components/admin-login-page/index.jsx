@@ -44,6 +44,15 @@ class LoginForm extends Component {
     password: ''
   };
 
+  componentDidMount() {
+    let uid = localStorage.getItem('uid');
+    let {history} = this.state;
+
+    if (uid) {
+      history.push('/dashboard/admin');
+    }
+  }
+
   onSubmit(e) {
     let {history} = this.props;
     let {
@@ -56,7 +65,21 @@ class LoginForm extends Component {
 
     auth.signInWithEmailAndPassword(email, password)
     .then(() => {
-      
+      let uid = auth.currentUser.uid;
+
+      database.ref('admin/' + uid).once('value')
+      .then((snap) => {
+        if (snap.val()) {
+          localStorage.setItem('uid', uid);
+
+          history.push('/dashboard/admin');
+        } else {
+          this.setState({
+            error: "Akun tidak ditemukan",
+            isLoading: false
+          })
+        }
+      })
     })
     .catch((error) => this.setState(error));
 
