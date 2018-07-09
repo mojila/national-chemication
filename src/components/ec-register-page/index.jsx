@@ -222,7 +222,7 @@ class InfoDasarForm extends Component {
                 <Label className="small text-uppercase">
                     Nama Institusi Pendidikan
                 </Label>
-                <Input size="sm" placeholder="Masukkan judul karya"
+                <Input size="sm" placeholder="Masukkan Nama Institusi"
                   value={namaInstitusiPendidikan}
                   onChange={(e) => this.setState({namaInstitusiPendidikan: e.target.value})}
                 />
