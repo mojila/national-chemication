@@ -17,7 +17,7 @@ import HsfcRegisterPage from './../hsfc-register-page';
 import HsfcPaymentPage from './../hsfc-payment-page';
 import AdminLoginPage from './../admin-login-page';
 import CeoDashboardPage from './../ceo-dashboard-page/ceoDashboardPage';
-import CeoEditMember from './../ceo-edit-member/ceoEditMember';
+import CeoEditMember from './../ceo-edit-member';
 import AdminDashboardPage from './../admin-dashboard-page';
 import PesertaCeoPage from './../peserta-ceo-page/pesertaCeoPage';
 

@@ -8,8 +8,7 @@ import {
     FormGroup,
     Input,
     Label,
-    Button,
-    Progress
+    Button
 } from 'reactstrap';
 import {Animated} from 'react-animated-css';
 import ReactLoading from 'react-loading';
@@ -117,7 +116,7 @@ class PaymentForm extends Component {
                 </div>}
                 {buktiPembayaran
                 && <div>
-                  <img src={buktiPembayaran} className="img-fluid mb-1"/>
+                  <img src={buktiPembayaran} alt="Gagal Dimuat" className="img-fluid mb-1"/>
                 </div>}
                 <Input className="small" type="file"
                   onChange={(e) => {
