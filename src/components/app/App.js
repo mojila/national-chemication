@@ -20,6 +20,7 @@ import CeoDashboardPage from './../ceo-dashboard-page/ceoDashboardPage';
 import CeoEditMember from './../ceo-edit-member';
 import AdminDashboardPage from './../admin-dashboard-page';
 import PesertaCeoPage from './../peserta-ceo-page/pesertaCeoPage';
+import CeoPrint from './../print/ceo.jsx';
 
 const App = () =>
   <Router>
@@ -89,6 +90,11 @@ const App = () =>
           exact
           path={routes.DASHBOARD.CEO_EDIT_MEMBER}
           component={CeoEditMember}
+        />
+        <Route 
+          exact
+          path={routes.PRINT.CEO}
+          component={CeoPrint}
         />
       </Switch>
     </Provider>

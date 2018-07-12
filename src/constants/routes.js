@@ -26,10 +26,17 @@ const DASHBOARD = {
     CEO_EDIT_MEMBER: '/dashboard/ceo/edit-member/:step'
 };
 
+const PRINT = {
+    CEO: '/print/ceo/:key',
+    EC: '/print/ec/:key',
+    HSFC: '/print/hsfc/:key'
+};
+
 export {
     ROOT, 
     REGISTER, 
     LOGIN, 
     PAYMENT, 
-    DASHBOARD
+    DASHBOARD,
+    PRINT
 };
