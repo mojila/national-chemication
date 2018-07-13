@@ -8,7 +8,7 @@ import {
 
 import logo from './../../statics/images/logo.png';
 
-class CeoPrint extends Component {
+class EcPrint extends Component {
     componentDidMount() {
         document.body.style.background = "#fff";
     }
@@ -49,7 +49,7 @@ class CeoPrint extends Component {
                 <Row className="border-top border-primary">
                     <Col md="2">
                         <div className="p-3 bg-primary mt-2">
-                            <p className="h1 text-white text-center">CEO</p>
+                            <p className="h1 text-white text-center">EC</p>
                         </div>
                     </Col>
                     <Col md="10">
@@ -71,4 +71,4 @@ class CeoPrint extends Component {
     }
 }
 
-export default CeoPrint;
+export default EcPrint;

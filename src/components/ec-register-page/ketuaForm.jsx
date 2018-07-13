@@ -8,8 +8,11 @@ import {
     Input,
     Label
 } from 'reactstrap';
+import {withRouter} from 'react-router-dom';
+import ReactLoading from 'react-loading';
+import swal from 'sweetalert';
 
-import {sessionGet, sessionSet} from './';
+import {database} from './../../firebase/firebase';
 
 class KetuaForm extends Component {
     state = {
@@ -20,20 +23,34 @@ class KetuaForm extends Component {
       kontak: '',
       email: '',
       foto: '',
-      ktm: ''
+      ktm: '',
+      isLoading: false
     };
   
     componentDidMount() {
-      this.setState({
-        nama: sessionGet('ec-register-ketua-nama') || "",
-        nim: sessionGet('ec-register-ketua-nim') || "",
-        jurusan: sessionGet('ec-register-ketua-jurusan') || "",
-        semester: sessionGet('ec-register-ketua-semester') || "",
-        kontak: sessionGet('ec-register-ketua-kontak') || "",
-        email: sessionGet('ec-register-ketua-email') || "",
-        foto: sessionGet('ec-register-ketua-foto') || "",
-        ktm: sessionGet('ec-register-ketua-ktm') || ""
-      });
+      window.scrollTo(0,0);
+
+      let uid = localStorage.getItem('ec-register-uid');
+
+      if (uid) {
+        database.ref('pesertaEc/' + uid).once('value')
+        .then((snap) => {
+            let ketua = snap.val().ketua;
+
+            if (ketua) {
+                this.setState({
+                  nama: ketua.nama || '',
+                  nim: ketua.nim || '',
+                  jurusan: ketua.jurusan || '',
+                  semester: ketua.semester || '',
+                  kontak: ketua.kontak || '',
+                  email: ketua.email || '',
+                  foto: ketua.foto || '',
+                  ktm: ketua.ktm || ''
+                });
+            }
+        });
+      }
     }
   
     onSubmit(e) {
@@ -50,17 +67,34 @@ class KetuaForm extends Component {
       let {
         history
       } = this.props;
-  
-      sessionSet('ec-register-ketua-nama', nama);
-      sessionSet('ec-register-ketua-nim', nim);
-      sessionSet('ec-register-ketua-jurusan', jurusan);
-      sessionSet('ec-register-ketua-semester', semester);
-      sessionSet('ec-register-ketua-kontak', kontak);
-      sessionSet('ec-register-ketua-email', email);
-      sessionSet('ec-register-ketua-foto', foto);
-      sessionSet('ec-register-ketua-ktm', ktm);
-  
-      history.push('/daftar/ec/4');
+      let uid = localStorage.getItem('ec-register-uid');
+
+      this.setState({isLoading: true});
+
+      if (uid) {
+        database.ref('pesertaEc/' + uid).update({
+          ketua: {
+            nama,
+            nim,
+            jurusan,
+            semester,
+            kontak,
+            email,
+            foto,
+            ktm
+          }
+        })
+        .then(() => {
+          this.setState({isLoading: false});
+          
+          history.push('/daftar/ec/4');
+        });
+      } else {
+        this.setState({isLoading: false});
+
+        swal("Pastikan telah mengisi Info Dasar.")
+          .then(() => history.push('/daftar/ec/1'));
+      }
   
       e.preventDefault();
     }
@@ -75,7 +109,8 @@ class KetuaForm extends Component {
         kontak,
         email,
         foto,
-        ktm
+        ktm,
+        isLoading
       } = this.state;
   
       return (
@@ -208,7 +243,12 @@ class KetuaForm extends Component {
               >Sebelumnya</Button>
             </Col>
             <Col md="6">
-              <Button className="primary" color="primary" block>Selanjutnya</Button>
+              <Button className="primary" color="primary" block>
+                {isLoading
+                && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                {!isLoading
+                && 'Selanjutnya'}
+              </Button>
             </Col>
           </Row>
         </Form>
@@ -216,4 +256,4 @@ class KetuaForm extends Component {
     }
 }
 
-export default KetuaForm;
+export default withRouter(KetuaForm);

@@ -8,8 +8,10 @@ import {
     Input,
     Label
 } from 'reactstrap';
+import ReactLoading from 'react-loading';
+import swal from 'sweetalert';
 
-import {sessionGet, sessionSet} from './';
+import {database} from './../../firebase/firebase';
 
 
 class Anggota2Form extends Component {
@@ -21,22 +23,33 @@ class Anggota2Form extends Component {
       kontak: '',
       email: '',
       foto: '',
-      ktm: ''
+      ktm: '',
+      isLoading: false
     };
   
     componentDidMount() {
-        window.scrollTo(0,0);
+      let uid = localStorage.getItem('ec-register-uid');
+      window.scrollTo(0,0);
 
-        this.setState({
-            nama: sessionGet('ec-register-anggota2-nama') || "",
-            nim: sessionGet('ec-register-anggota2-nim') || "",
-            jurusan: sessionGet('ec-register-anggota2-jurusan') || "",
-            semester: sessionGet('ec-register-anggota2-semester') || "",
-            kontak: sessionGet('ec-register-anggota2-kontak') || "",
-            email: sessionGet('ec-register-anggota2-email') || "",
-            foto: sessionGet('ec-register-anggota2-foto') || "",
-            ktm: sessionGet('ec-register-anggota2-ktm') || ""
-        });
+      if (uid) {
+          database.ref('pesertaEc/' + uid).once('value')
+          .then((snap) => {
+              let anggota2 = snap.val().anggota2;
+
+              if (anggota2) {
+                  this.setState({
+                      nama: anggota2.nama || '',
+                      nim: anggota2.nim || '',
+                      jurusan: anggota2.jurusan || '',
+                      semester: anggota2.semester || '',
+                      kontak: anggota2.kontak || '',
+                      email: anggota2.email || '',
+                      foto: anggota2.foto || '',
+                      ktm: anggota2.ktm || ''
+                  });
+              }
+          });
+      }
     }
   
     onSubmit(e) {
@@ -50,21 +63,36 @@ class Anggota2Form extends Component {
         foto,
         ktm
       } = this.state;
-      let {
-        history
-      } = this.props;
-  
-      sessionSet('ec-register-anggota2-nama', nama);
-      sessionSet('ec-register-anggota2-nim', nim);
-      sessionSet('ec-register-anggota2-jurusan', jurusan);
-      sessionSet('ec-register-anggota2-semester', semester);
-      sessionSet('ec-register-anggota2-kontak', kontak);
-      sessionSet('ec-register-anggota2-email', email);
-      sessionSet('ec-register-anggota2-foto', foto);
-      sessionSet('ec-register-anggota2-ktm', ktm);
-  
-      history.push('/daftar/ec/finish');
-  
+      let { history } = this.props;
+      let uid = localStorage.getItem('ec-register-uid');
+      this.setState({isLoading: true});
+
+      if (uid) {
+          database.ref('pesertaEc/' + uid).update({
+              anggota2: {
+                  nama,
+                  nim,
+                  jurusan,
+                  semester,
+                  kontak,
+                  email,
+                  foto,
+                  ktm
+              }
+          })
+          .then(() => {
+              this.setState({isLoading: false});
+              history.push('/daftar/ec/finish');
+          });
+      } else {
+          this.setState({isLoading: false});
+
+          swal('Pastikan telah mengisi Info Dasar.')
+          .then(() => {
+              history.push('/daftar/ec/1');
+          });
+      }
+
       e.preventDefault();
     }
   
@@ -78,7 +106,8 @@ class Anggota2Form extends Component {
         kontak,
         email,
         foto,
-        ktm
+        ktm,
+        isLoading
       } = this.state;
   
       return (
@@ -211,7 +240,12 @@ class Anggota2Form extends Component {
               >Sebelumnya</Button>
             </Col>
             <Col md="6">
-              <Button className="primary" color="primary" block>Selesai Mendaftar</Button>
+              <Button className="primary" color="primary" block>
+                {isLoading
+                && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                {!isLoading
+                && 'Selesai Mendaftar'}
+              </Button>
             </Col>
           </Row>
         </Form>

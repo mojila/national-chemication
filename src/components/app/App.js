@@ -21,6 +21,8 @@ import CeoEditMember from './../ceo-edit-member';
 import AdminDashboardPage from './../admin-dashboard-page';
 import PesertaCeoPage from './../peserta-ceo-page/pesertaCeoPage';
 import CeoPrint from './../print/ceo.jsx';
+import EcPrint from './../print/ec.jsx';
+import HsfcPrint from './../print/hsfc.jsx';
 
 const App = () =>
   <Router>
@@ -95,6 +97,16 @@ const App = () =>
           exact
           path={routes.PRINT.CEO}
           component={CeoPrint}
+        />
+        <Route 
+          exact
+          path={routes.PRINT.EC}
+          component={EcPrint}
+        />
+        <Route 
+          exact
+          path={routes.PRINT.HSFC}
+          component={HsfcPrint}
         />
       </Switch>
     </Provider>

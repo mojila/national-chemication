@@ -8,8 +8,10 @@ import {
     Input,
     Label
 } from 'reactstrap';
+import ReactLoading from 'react-loading';
+import swal from 'sweetalert';
 
-import {sessionGet, sessionSet} from './';
+import {database} from './../../firebase/firebase';
 
 class Anggota1Form extends Component {
     state = {
@@ -20,22 +22,34 @@ class Anggota1Form extends Component {
         kontak: '',
         email: '',
         foto: '',
-        ktm: ''
+        ktm: '',
+        isLoading: false
     };
 
     componentDidMount() {
+        let uid = localStorage.getItem('ec-register-uid');
+
         window.scrollTo(0,0);
 
-        this.setState({
-            nama: sessionGet('ec-register-anggota1-nama') || "",
-            nim: sessionGet('ec-register-anggota1-nim') || "",
-            jurusan: sessionGet('ec-register-anggota1-jurusan') || "",
-            semester: sessionGet('ec-register-anggota1-semester') || "",
-            kontak: sessionGet('ec-register-anggota1-kontak') || "",
-            email: sessionGet('ec-register-anggota1-email') || "",
-            foto: sessionGet('ec-register-anggota1-foto') || "",
-            ktm: sessionGet('ec-register-anggota1-ktm') || ""
-        });
+        if (uid) {
+            database.ref('pesertaEc/' + uid).once('value')
+            .then((snap) => {
+                let anggota1 = snap.val().anggota1;
+
+                if (anggota1) {
+                    this.setState({
+                        nama: anggota1.nama || '',
+                        nim: anggota1.nim || '',
+                        jurusan: anggota1.jurusan || '',
+                        semester: anggota1.semester || '',
+                        kontak: anggota1.kontak || '',
+                        email: anggota1.email || '',
+                        foto: anggota1.foto || '',
+                        ktm: anggota1.ktm || ''
+                    });
+                }
+            });
+        }
     }
 
     onSubmit(e) {
@@ -49,20 +63,35 @@ class Anggota1Form extends Component {
             foto,
             ktm
         } = this.state;
-        let {
-        history
-        } = this.props;
+        let { history } = this.props;
+        let uid = localStorage.getItem('ec-register-uid');
+        this.setState({isLoading: true});
 
-        sessionSet('ec-register-anggota1-nama', nama);
-        sessionSet('ec-register-anggota1-nim', nim);
-        sessionSet('ec-register-anggota1-jurusan', jurusan);
-        sessionSet('ec-register-anggota1-semester', semester);
-        sessionSet('ec-register-anggota1-kontak', kontak);
-        sessionSet('ec-register-anggota1-email', email);
-        sessionSet('ec-register-anggota1-foto', foto);
-        sessionSet('ec-register-anggota1-ktm', ktm);
+        if (uid) {
+            database.ref('pesertaEc/' + uid).update({
+                anggota1: {
+                    nama,
+                    nim,
+                    jurusan,
+                    semester,
+                    kontak,
+                    email,
+                    foto,
+                    ktm
+                }
+            })
+            .then(() => {
+                this.setState({isLoading: false});
+                history.push('/daftar/ec/5');
+            });
+        } else {
+            this.setState({isLoading: false});
 
-        history.push('/daftar/ec/5');
+            swal('Pastikan telah mengisi Info Dasar.')
+            .then(() => {
+                history.push('/daftar/ec/1');
+            });
+        }
 
         e.preventDefault();
     }
@@ -77,7 +106,8 @@ class Anggota1Form extends Component {
             kontak,
             email,
             foto,
-            ktm
+            ktm,
+            isLoading
         } = this.state;
 
         return (
@@ -210,7 +240,12 @@ class Anggota1Form extends Component {
                 >Sebelumnya</Button>
             </Col>
             <Col md="6">
-                <Button className="primary" color="primary" block>Selanjutnya</Button>
+                <Button className="primary" color="primary" block>
+                    {isLoading
+                    && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                    {!isLoading
+                    && 'Selanjutnya'}
+                </Button>
             </Col>
             </Row>
         </Form>

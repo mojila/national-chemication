@@ -8,8 +8,10 @@ import {
     Input,
     Label
 } from 'reactstrap';
+import ReactLoading from 'react-loading';
+import swal from 'sweetalert';
 
-import {sessionGet, sessionSet} from './';
+import {database} from './../../firebase/firebase';
 
 class DosenPembimbingForm extends Component {
     state = {
@@ -17,15 +19,29 @@ class DosenPembimbingForm extends Component {
         nip: '',
         kontak: '',
         email: '',
+        isLoading: false
     };
 
     componentDidMount() {
-        this.setState({
-            nama: sessionGet('ec-register-dosenPembimbing-nama') || "",
-            nip: sessionGet('ec-register-dosenPembimbing-nip') || "",
-            kontak: sessionGet('ec-register-dosenPembimbing-kontak') || "",
-            email: sessionGet('ec-register-dosenPembimbing-email') || "",
-        });
+        let uid = localStorage.getItem('ec-register-uid');
+
+        window.scrollTo(0,0);
+
+        if (uid) {
+            database.ref('pesertaEc/' + uid).once('value')
+            .then((snap) => {
+                let dosen = snap.val().dosen;
+
+                if (dosen) {
+                    this.setState({
+                        nama: dosen.nama || '',
+                        nip: dosen.nip || '',
+                        kontak: dosen.kontak || '',
+                        email: dosen.email || ''
+                    });
+                }
+            });
+        }
     }
 
     onSubmit(e) {
@@ -33,18 +49,34 @@ class DosenPembimbingForm extends Component {
             nama,
             nip,
             kontak,
-            email,
+            email
         } = this.state;
         let {
             history
         } = this.props;
+        let uid = localStorage.getItem('ec-register-uid');
+        
+        this.setState({isLoading: true});
 
-        sessionSet('ec-register-dosenPembimbing-nama', nama);
-        sessionSet('ec-register-dosenPembimbing-nip', nip);
-        sessionSet('ec-register-dosenPembimbing-kontak', kontak);
-        sessionSet('ec-register-dosenPembimbing-email', email);
+        if (uid) {
+            database.ref('pesertaEc/' + uid).update({
+                dosen: {
+                    nama,
+                    nip,
+                    kontak,
+                    email
+                }
+            });
 
-        history.push('/daftar/ec/3');
+            this.setState({isLoading: false});
+
+            history.push('/daftar/ec/3');            
+        } else {
+            this.setState({isLoading: false});
+
+            swal("Pastikan telah mengisi Info Dasar.")
+                .then(() => history.push('/daftar/ec/1'));
+        }
 
         e.preventDefault();
     }
@@ -56,6 +88,7 @@ class DosenPembimbingForm extends Component {
             nip,
             kontak,
             email,
+            isLoading
         } = this.state;
 
         return (
@@ -114,7 +147,12 @@ class DosenPembimbingForm extends Component {
                 >Sebelumnya</Button>
             </Col>
             <Col md="6">
-                <Button className="primary" color="primary" block>Selanjutnya</Button>
+                <Button className="primary" color="primary" block>
+                    {isLoading
+                    && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                    {!isLoading
+                    && 'Selanjutnya'}
+                </Button>
             </Col>
             </Row>
         </Form>

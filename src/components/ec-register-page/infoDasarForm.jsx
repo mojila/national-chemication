@@ -9,8 +9,10 @@ import {
     Input,
     Label
 } from 'reactstrap';
+import {withRouter} from 'react-router-dom';
+import ReactLoading from 'react-loading';
 
-import {sessionGet, sessionSet} from './';
+import {database} from './../../firebase/firebase.js';
 
 class InfoDasarForm extends Component {
     state = {
@@ -18,17 +20,31 @@ class InfoDasarForm extends Component {
         namaInstitusiPendidikan: '',
         telpOrFaxInstitusiPendidikan: '',
         emailInstitusiPendidikan: '',
-        alamatInstitusiPendidikan: ''
+        alamatInstitusiPendidikan: '',
+        isLoading: false
     };
   
     componentDidMount() {
-      this.setState({
-        judulKarya: sessionGet('ec-register-infoDasar-judulKarya') || "",
-        namaInstitusiPendidikan: sessionGet('ec-register-infoDasar-namaInstitusiPendidikan') || "",
-        telpOrFaxInstitusiPendidikan: sessionGet('ec-register-infoDasar-telpOrFaxInstitusiPendidikan') || "",
-        emailInstitusiPendidikan: sessionGet('ec-register-infoDasar-emailInstitusiPendidikan') || "",
-        alamatInstitusiPendidikan: sessionGet('ec-register-infoDasar-alamatInstitusiPendidikan') || ""
-      });
+        window.scrollTo(0,0);
+
+        let uid = localStorage.getItem('ec-register-uid');
+
+        if (uid) {
+        database.ref('pesertaEc/' + uid).once('value')
+        .then((snap) => {
+            let infoDasar = snap.val();
+
+            if (infoDasar) {
+                this.setState({
+                    judulKarya: infoDasar.judulKarya || "",
+                    namaInstitusiPendidikan: infoDasar.namaInstitusiPendidikan || "",
+                    telpOrFaxInstitusiPendidikan: infoDasar.telpOrFaxInstitusiPendidikan || "",
+                    emailInstitusiPendidikan: infoDasar.emailInstitusiPendidikan || "",
+                    alamatInstitusiPendidikan: infoDasar.alamatInstitusiPendidikan || ""
+                });
+            }
+        });
+        }
     }
   
     onSubmit(e) {
@@ -42,14 +58,41 @@ class InfoDasarForm extends Component {
       let {
         history
       } = this.props;
-  
-      sessionSet('ec-register-infoDasar-judulKarya', judulKarya);
-      sessionSet('ec-register-infoDasar-namaInstitusiPendidikan', namaInstitusiPendidikan);
-      sessionSet('ec-register-infoDasar-telpOrFaxInstitusiPendidikan', telpOrFaxInstitusiPendidikan);
-      sessionSet('ec-register-infoDasar-emailInstitusiPendidikan', emailInstitusiPendidikan);
-      sessionSet('ec-register-infoDasar-alamatInstitusiPendidikan', alamatInstitusiPendidikan);
-  
-      history.push('/daftar/ec/2');
+      let uid = localStorage.getItem('ec-register-uid');
+
+      this.setState({isLoading: true});
+
+      if (uid) {
+        database.ref('pesertaEc/' + uid).update({
+            judulKarya,
+            namaInstitusiPendidikan,
+            telpOrFaxInstitusiPendidikan,
+            emailInstitusiPendidikan,
+            alamatInstitusiPendidikan
+        })
+        .then(() => {
+            this.setState({isLoading: false});
+
+            history.push('/daftar/ec/2');
+        });
+      } else {
+        let key = database.ref('pesertaEc').push().key;
+
+        localStorage.setItem('ec-register-uid', key);
+
+        database.ref('pesertaEc/'+key).set({
+            judulKarya,
+            namaInstitusiPendidikan,
+            telpOrFaxInstitusiPendidikan,
+            emailInstitusiPendidikan,
+            alamatInstitusiPendidikan
+        })
+        .then(() => {
+            this.setState({isLoading: false});
+
+            history.push('/daftar/ec/2');
+        });
+      }
   
       e.preventDefault();
     }
@@ -60,7 +103,8 @@ class InfoDasarForm extends Component {
         namaInstitusiPendidikan,
         telpOrFaxInstitusiPendidikan,
         emailInstitusiPendidikan,
-        alamatInstitusiPendidikan
+        alamatInstitusiPendidikan,
+        isLoading
       } = this.state;
   
       return (<Form onSubmit={this.onSubmit.bind(this)}>
@@ -114,9 +158,7 @@ class InfoDasarForm extends Component {
         </Col>
         <Col md="6">
             <FormGroup>
-                <Label
-                    className="small text-uppercase"
-                >
+                <Label className="small text-uppercase">
                     Email Institusi Pendidikan
                 </Label>
                 <Input
@@ -131,9 +173,7 @@ class InfoDasarForm extends Component {
         </Col>
         <Col md="12">
             <FormGroup>
-                <Label
-                    className="small text-uppercase"
-                >
+                <Label className="small text-uppercase">
                     Alamat Institusi
                 </Label>
                 <textarea className="form-control"
@@ -147,11 +187,16 @@ class InfoDasarForm extends Component {
         </Row>
         <Row className="mb-1 p-3 bg-white shadow rounded">
         <Col md={{size: 6, offset: 6}}>
-            <Button color="primary" block>Selanjutnya</Button>
+            <Button color="primary" block>
+                {isLoading
+                && <ReactLoading height={24} width={24} className="ml-auto mr-auto" type="spin" color="white"/>}
+                {!isLoading
+                && 'Selanjutnya'}
+            </Button>
         </Col>
         </Row>
     </Form>);
     }
 }
 
-export default InfoDasarForm;
+export default withRouter(InfoDasarForm);
