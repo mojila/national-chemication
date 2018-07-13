@@ -11,6 +11,11 @@ import logo from './../../statics/images/logo.png';
 class EcPrint extends Component {
     componentDidMount() {
         document.body.style.background = "#fff";
+        let uid = localStorage.getItem('ec-register-uid') || "";
+
+        if (uid) {
+            localStorage.clear();
+        }
     }
 
     render() {

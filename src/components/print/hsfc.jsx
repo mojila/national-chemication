@@ -11,6 +11,12 @@ import logo from './../../statics/images/logo.png';
 class HsfcPrint extends Component {
     componentDidMount() {
         document.body.style.background = "#fff";
+
+        let uid = localStorage.getItem('hsfc-register-uid') || "";
+
+        if (uid) {
+            localStorage.clear();
+        }
     }
 
     render() {
